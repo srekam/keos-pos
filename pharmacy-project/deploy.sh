@@ -62,3 +62,4 @@ echo "  - Restart API: docker-compose restart api"
 echo "  - Rebuild API: docker-compose up -d --build api"
 echo "  - Stop all: docker-compose down"
 
+
