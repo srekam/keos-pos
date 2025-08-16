@@ -12,6 +12,7 @@
     "docker-down": "docker-compose down",
     "docker-logs": "docker-compose logs -f",
     "docker-deploy": "./docker-deploy.sh",
+    "deploy-nginx": "./deploy-nginx.sh",
     "docker-build": "docker-compose build --no-cache",
     "docker-restart": "docker-compose restart",
     "docker-clean": "docker-compose down --volumes --remove-orphans",

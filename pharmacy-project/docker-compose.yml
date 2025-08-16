@@ -46,7 +46,7 @@ services:
     container_name: pharmacy_pos_api
     restart: unless-stopped
     ports:
-      - "43000:3000"  # New port: 43000
+      - "41300:3000"  # New port: 41300 for Node.js API
     environment:
       - NODE_ENV=production
       - DB_HOST=postgres
@@ -62,6 +62,21 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    container_name: pharmacy_pos_nginx
+    restart: unless-stopped
+    ports:
+      - "40080:80"  # New port: 40080 for web HTML
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/dashboard.html:/usr/share/nginx/html/index.html:ro
+      - ./assets:/usr/share/nginx/html/assets:ro
+    networks:
+      - pharmacy_network
+    depends_on:
+      - api
 
 volumes:
   postgres_data:

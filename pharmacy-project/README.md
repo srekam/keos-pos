@@ -119,7 +119,8 @@ The project is configured with Docker containers running on a **remote server**:
 - **Remote Docker Server**: `10.5.50.48` (NOT localhost)
 - **PostgreSQL Database**: Internal only (no port forwarding)
 - **pgAdmin**: Web interface on port 48080
-- **Node.js API**: Running on port 43000
+- **Node.js API**: Running on port 41300
+- **Nginx Web**: Dashboard & API proxy on port 40080
 - **Database**: `pharmacy_pos` with complete schema and sample data
 - **Credentials**: See Docker section below
 
@@ -196,7 +197,7 @@ npx react-native run-ios
 
 ## 📊 API Endpoints
 
-**🌐 Base URL**: `http://10.5.50.48:43000`
+**🌐 Base URL**: `http://10.5.50.48:41300`
 
 ### Health & Status
 - `GET /health` - API health check

@@ -20,10 +20,15 @@
    - Easy to remember (48 + 080)
    - Clear separation from standard ports
 
-3. **Port 43000 for API**:
+3. **Port 41300 for Node.js API**:
    - High port number to avoid conflicts
-   - Easy to remember (43 + 000)
+   - Easy to remember (41 + 300)
    - Room for additional API services
+
+4. **Port 40080 for Nginx Web**:
+   - Serves HTML dashboard and proxies API requests
+   - Easy to remember (40 + 080)
+   - Web interface for users
 
 4. **Port Range 40001-41001**:
    - Reserved for future services
@@ -44,27 +49,34 @@ pgadmin:
 
 api:
   ports:
-    - "43000:3000"  # Was 3000:3000
+    - "41300:3000"  # Was 43000:3000
+
+nginx:
+  ports:
+    - "40080:80"  # New: Web dashboard & API proxy
 ```
 
 ### **server.js Changes:**
 ```javascript
 // Updated console logs to show new ports
-console.log(`🌐 Health check: http://10.5.50.48:43000/health`);
+console.log(`🌐 Health check: http://10.5.50.48:41300/health`);
 console.log(`📊 pgAdmin: http://10.5.50.48:48080`);
+console.log(`🌐 Web Dashboard: http://10.5.50.48:40080`);
 ```
 
 ## 🌐 **Access URLs**
 
 ### **Production (Remote Server 10.5.50.48):**
-- **API Base**: http://10.5.50.48:43000
+- **API Base**: http://10.5.50.48:41300
+- **Web Dashboard**: http://10.5.50.48:40080
 - **pgAdmin**: http://10.5.50.48:48080
-- **Health Check**: http://10.5.50.48:43000/health
+- **Health Check**: http://10.5.50.48:41300/health
 
 ### **Local Development:**
-- **API Base**: http://localhost:43000
+- **API Base**: http://localhost:41300
+- **Web Dashboard**: http://localhost:40080
 - **pgAdmin**: http://localhost:48080
-- **Health Check**: http://localhost:43000/health
+- **Health Check**: http://localhost:41300/health
 
 ## 🚀 **Deployment Commands**
 
@@ -107,7 +119,8 @@ docker-compose up -d --build api
 |---------|---------------|---------------|---------|
 | PostgreSQL | 5432 | None | Database (internal only) |
 | pgAdmin | 80 | 48080 | Database management |
-| Node.js API | 3000 | 43000 | REST API endpoints |
+| Node.js API | 3000 | 41300 | REST API endpoints |
+| Nginx Web | 80 | 40080 | HTML Dashboard & API Proxy |
 | Future Service 1 | TBD | 40001-41001 | Reserved range |
 | Future Service 2 | TBD | 40001-41001 | Reserved range |
 

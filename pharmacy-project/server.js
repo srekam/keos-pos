@@ -91,12 +91,13 @@ async function startServer() {
     // Start the server
     app.listen(PORT, () => {
       console.log(`🚀 Thai Pharmacy POS API server running on port ${PORT}`);
-      console.log(`🌐 Health check: http://10.5.50.48:43000/health`);
-      console.log(`🔍 Test DB: http://10.5.50.48:43000/api/test-db`);
-      console.log(`💊 Products: http://10.5.50.48:43000/api/products`);
-      console.log(`👥 Customers: http://10.5.50.48:43000/api/customers`);
-      console.log(`🔐 Auth: http://10.5.50.48:43000/api/auth`);
+      console.log(`🌐 Health check: http://10.5.50.48:41300/health`);
+      console.log(`🔍 Test DB: http://10.5.50.48:41300/api/test-db`);
+      console.log(`💊 Products: http://10.5.50.48:41300/api/products`);
+      console.log(`👥 Customers: http://10.5.50.48:41300/api/customers`);
+      console.log(`🔐 Auth: http://10.5.50.48:41300/api/auth`);
       console.log(`📊 pgAdmin: http://10.5.50.48:48080`);
+      console.log(`🌐 Web Dashboard: http://10.5.50.48:40080`);
     });
     
   } catch (error) {
