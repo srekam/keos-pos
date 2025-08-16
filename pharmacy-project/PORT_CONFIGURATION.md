@@ -120,7 +120,7 @@ docker-compose up -d --build api
 | PostgreSQL | 5432 | None | Database (internal only) |
 | pgAdmin | 80 | 48080 | Database management |
 | Node.js API | 3000 | 41300 | REST API endpoints |
-| Nginx Web | 80 | 40080 | HTML Dashboard & API Proxy |
+| Nginx Web | 80 | 40080 | Login Page, Dashboard & API Proxy |
 | Future Service 1 | TBD | 40001-41001 | Reserved range |
 | Future Service 2 | TBD | 40001-41001 | Reserved range |
 

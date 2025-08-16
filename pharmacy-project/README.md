@@ -120,7 +120,7 @@ The project is configured with Docker containers running on a **remote server**:
 - **PostgreSQL Database**: Internal only (no port forwarding)
 - **pgAdmin**: Web interface on port 48080
 - **Node.js API**: Running on port 41300
-- **Nginx Web**: Dashboard & API proxy on port 40080
+- **Nginx Web**: Login page, Dashboard & API proxy on port 40080
 - **Database**: `pharmacy_pos` with complete schema and sample data
 - **Credentials**: See Docker section below
 
