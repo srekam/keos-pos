@@ -11,6 +11,10 @@
     "docker-up": "docker-compose up -d",
     "docker-down": "docker-compose down",
     "docker-logs": "docker-compose logs -f",
+    "docker-deploy": "./docker-deploy.sh",
+    "docker-build": "docker-compose build --no-cache",
+    "docker-restart": "docker-compose restart",
+    "docker-clean": "docker-compose down --volumes --remove-orphans",
     "create-admin": "node create_admin_user.js"
   },
   "keywords": [
