@@ -10,7 +10,8 @@
     "setup-db": "setup_database.bat",
     "docker-up": "docker-compose up -d",
     "docker-down": "docker-compose down",
-    "docker-logs": "docker-compose logs -f"
+    "docker-logs": "docker-compose logs -f",
+    "create-admin": "node create_admin_user.js"
   },
   "keywords": [
     "pharmacy",
@@ -24,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^6.14.0",
+    "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",

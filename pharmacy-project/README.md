@@ -117,9 +117,9 @@ This project is configured for **remote development** where:
 The project is configured with Docker containers running on a **remote server**:
 
 - **Remote Docker Server**: `10.5.50.48` (NOT localhost)
-- **PostgreSQL Database**: Running on port 5432
-- **pgAdmin**: Web interface on port 8080
-- **Node.js API**: Running on port 3000
+- **PostgreSQL Database**: Internal only (no port forwarding)
+- **pgAdmin**: Web interface on port 48080
+- **Node.js API**: Running on port 43000
 - **Database**: `pharmacy_pos` with complete schema and sample data
 - **Credentials**: See Docker section below
 
@@ -150,11 +150,11 @@ docker-compose up -d --build api
 ```
 
 ### Database Access
-- **PostgreSQL**: `10.5.50.48:5432` (Remote Docker server)
+- **PostgreSQL**: Internal access only (no external port)
 - **Database**: pharmacy_pos
 - **Username**: pharmacy_user
 - **Password**: pharmacy_password_2024
-- **pgAdmin**: http://10.5.50.48:8080 (admin@pharmacypos.com / admin_password_2024)
+- **pgAdmin**: http://10.5.50.48:48080 (admin@pharmacypos.com / admin_password_2024)
 
 **⚠️ REMOTE ACCESS**: All Docker services run on remote server `10.5.50.48`
 
@@ -196,7 +196,7 @@ npx react-native run-ios
 
 ## 📊 API Endpoints
 
-**🌐 Base URL**: `http://10.5.50.48:3000`
+**🌐 Base URL**: `http://10.5.50.48:43000`
 
 ### Health & Status
 - `GET /health` - API health check
@@ -477,7 +477,7 @@ ssh user@10.5.50.48 "cd /path/to/pharmacy-project && docker-compose ps"
 docker exec pharmacy_pos_db pg_isready -U pharmacy_user -d pharmacy_pos
 
 # Test API server locally
-curl http://10.5.50.19:3000/health
+curl http://10.5.50.19:43000/health
 ```
 
 ## 🚀 **QUICK ACTION CHECKLIST**

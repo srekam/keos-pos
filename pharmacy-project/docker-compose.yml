@@ -10,8 +10,7 @@ services:
       POSTGRES_USER: pharmacy_user
       POSTGRES_PASSWORD: pharmacy_password_2024
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
-    ports:
-      - "5432:5432"
+    # No port forwarding - internal access only via pgAdmin or API
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/init:/docker-entrypoint-initdb.d
@@ -33,7 +32,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin_password_2024
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
-      - "8080:80"
+      - "48080:80"  # New port: 48080
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     networks:
@@ -47,7 +46,7 @@ services:
     container_name: pharmacy_pos_api
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "43000:3000"  # New port: 43000
     environment:
       - NODE_ENV=production
       - DB_HOST=postgres

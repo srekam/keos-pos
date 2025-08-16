@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Database connection configuration - Use environment variables for Docker
 const dbConfig = {
-  host: process.env.DB_HOST || 'postgres', // Use Docker service name
+  host: process.env.DB_HOST || '10.5.50.48', // Use remote host IP
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'pharmacy_pos',
   user: process.env.DB_USER || 'pharmacy_user',
@@ -53,9 +53,11 @@ app.get('/api/test-db', async (req, res) => {
 
 // Import routes
 const productsRoutes = require('./routes/products');
+const authRoutes = require('./routes/auth');
 
 // Use routes
 app.use('/api/products', productsRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic customers endpoint
 app.get('/api/customers', async (req, res) => {
@@ -89,10 +91,12 @@ async function startServer() {
     // Start the server
     app.listen(PORT, () => {
       console.log(`🚀 Thai Pharmacy POS API server running on port ${PORT}`);
-      console.log(`🌐 Health check: http://10.5.50.48:${PORT}/health`);
-      console.log(`🔍 Test DB: http://10.5.50.48:${PORT}/api/test-db`);
-      console.log(`💊 Products: http://10.5.50.48:${PORT}/api/products`);
-      console.log(`👥 Customers: http://10.5.50.48:${PORT}/api/customers`);
+      console.log(`🌐 Health check: http://10.5.50.48:43000/health`);
+      console.log(`🔍 Test DB: http://10.5.50.48:43000/api/test-db`);
+      console.log(`💊 Products: http://10.5.50.48:43000/api/products`);
+      console.log(`👥 Customers: http://10.5.50.48:43000/api/customers`);
+      console.log(`🔐 Auth: http://10.5.50.48:43000/api/auth`);
+      console.log(`📊 pgAdmin: http://10.5.50.48:48080`);
     });
     
   } catch (error) {
