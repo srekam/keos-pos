@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Menu Debug Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .submenu {
+            display: none;
+        }
+        
+        .sidebar.expanded .submenu.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-2xl font-bold mb-4">Settings Menu Debug Test</h1>
+    
+    <!-- Test sidebar -->
+    <div id="sidebar" class="sidebar expanded bg-white p-4 rounded-lg shadow w-64">
+        <h2 class="font-semibold mb-4">Menu Test</h2>
+        
+        <!-- Settings -->
+        <div>
+            <button onclick="toggleMenu('settings')" class="w-full text-left p-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
+                <i class="fas fa-cog text-gray-600 mr-3"></i>
+                Settings
+            </button>
+            <div id="settings-menu" class="submenu ml-4 mt-1 space-y-1">
+                <a href="#" onclick="loadPage('settings-features')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Settings Features</a>
+                <a href="#" onclick="loadPage('billing-subscriptions')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Billing & Subscriptions</a>
+                <a href="#" onclick="loadPage('payment-types')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Payment Types</a>
+                <a href="#" onclick="loadPage('loyalty')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Loyalty</a>
+                <a href="#" onclick="loadPage('taxes')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Taxes</a>
+                <a href="#" onclick="loadPage('receipt')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Receipt</a>
+                <a href="#" onclick="loadPage('open-tickets')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Open Tickets</a>
+                <a href="#" onclick="loadPage('kitchen-printers')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Kitchen Printers</a>
+                <a href="#" onclick="loadPage('dining-options')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Dining Options</a>
+                <a href="#" onclick="loadPage('stores')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Stores</a>
+                <a href="#" onclick="loadPage('create-pos')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">POS Devices</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content area -->
+    <div id="content-area" class="mt-8 bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold">Content will load here</h3>
+        <p class="text-gray-600">Click on Settings menu items to test loading</p>
+    </div>
+
+    <script>
+        function toggleMenu(menuName) {
+            console.log('🔧 Toggling menu:', menuName);
+            
+            const menu = document.getElementById(menuName + '-menu');
+            if (menu) {
+                menu.classList.toggle('show');
+                console.log('📋 Menu classes after toggle:', menu.classList.toString());
+            } else {
+                console.error('❌ Menu not found:', menuName + '-menu');
+            }
+        }
+
+        async function loadPage(pageName) {
+            console.log('📄 Loading page:', pageName + '.html');
+            try {
+                const response = await fetch(`${pageName}.html`);
+                if (response.ok) {
+                    console.log('✅ Page loaded successfully:', pageName);
+                    const html = await response.text();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    
+                    const mainContent = tempDiv.querySelector('.p-6') || 
+                                      tempDiv.querySelector('main') || 
+                                      tempDiv.querySelector('body') || tempDiv;
+                    
+                    document.getElementById('content-area').innerHTML = mainContent.innerHTML;
+                } else {
+                    console.error('❌ Page not found:', response.status, response.statusText);
+                    document.getElementById('content-area').innerHTML = `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h2 class="text-2xl font-bold mb-4 text-red-600">Page Not Found</h2>
+                            <p class="text-gray-600">The page "${pageName}.html" could not be loaded.</p>
+                            <p class="text-sm text-gray-500 mt-2">Status: ${response.status} ${response.statusText}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Error loading page:', error);
+                document.getElementById('content-area').innerHTML = `
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-red-600">Loading Error</h2>
+                        <p class="text-gray-600">Failed to load "${pageName}.html"</p>
+                        <p class="text-sm text-gray-500 mt-2">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

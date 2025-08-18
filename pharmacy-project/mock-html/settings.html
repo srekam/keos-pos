@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-green-500 text-white shadow-sm">
+        <div class="flex items-center justify-between h-16 px-6">
+            <div class="flex items-center">
+                <button class="mr-4"><i class="fas fa-bars"></i></button>
+                <h1>Settings</h1>
+            </div>
+            <div class="user-info">📧 Owner Info</div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <div class="w-64 bg-white border-r">
+            <nav class="p-4">
+                <ul class="space-y-1">
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Features</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Billing & subscriptions</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Payment types</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Loyalty</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Taxes</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Receipt</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Open tickets</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Kitchen printers</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Dining options</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">Stores</a></li>
+                    <li><a href="#" class="block px-3 py-2 text-sm hover:bg-gray-100 rounded">POS devices</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="flex-1 p-6">
+            <div class="bg-white border rounded-lg p-8">
+                <h2 class="text-xl font-semibold mb-6">Features</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-medium">Shifts</h3>
+                            <p class="text-sm text-gray-500">Track when employees open and close the cash drawer</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-medium">Time clock</h3>
+                            <p class="text-sm text-gray-500">Track employee work hours</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-8 flex space-x-4">
+                    <button class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-md">CANCEL</button>
+                    <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

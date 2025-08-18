@@ -10,6 +10,7 @@ A comprehensive pharmacy management solution built with modern web technologies,
 - ✅ **React Backend**: Running on port 40002 (Healthy)
 - ✅ **pgAdmin**: Running on port 48080
 - ✅ **Mock HTML Interface**: Running on port 40005 (Healthy)
+- ✅ **Modern POS Interface**: Running on port 40006 (Healthy)
 - 🔧 **Nginx**: Disabled (can be enabled via docker-compose.yml)
 
 ## 🏗️ **Project Architecture**
@@ -80,7 +81,7 @@ docker-compose up -d
 - **React Backend**: http://localhost:40002
 - **Mock UI Interface**: http://localhost:40005/mock-ui.html ⭐ **(New!)**
 - **Backend Viewer**: http://localhost:40005/index.html
-- **Modern POS Interface**: file:///mock-pos/index.html ⭐ **(New!)**
+- **Modern POS Interface**: http://localhost:40006 ⭐ **(New!)**
 - **Backend API**: http://localhost:3000 (internal)
 - **Database**: PostgreSQL on port 5432
 
@@ -244,6 +245,9 @@ services:
     
   mock-html:             # HTML mock data interface
     ports: ["40005:80"]
+    
+  mock-pos:              # Modern POS interface
+    ports: ["40006:80"]
     
   nginx:                 # Reverse proxy and load balancer
     ports: ["80:80", "443:443"]
@@ -429,6 +433,7 @@ curl http://localhost:3000/health          # Backend API
 curl http://localhost:40001/health         # React Frontend
 curl http://localhost:40002/health         # React Backend
 curl http://localhost:40005/health         # Mock HTML Interface
+curl http://localhost:40006/health         # Modern POS Interface
 
 # Test database connection
 curl http://localhost:3000/api/test-db

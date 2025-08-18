@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Summary - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-green-500 text-white shadow-sm">
+        <div class="flex items-center justify-between h-16 px-6">
+            <div class="flex items-center">
+                <button class="mr-4"><i class="fas fa-bars"></i></button>
+                <h1>Sales summary</h1>
+            </div>
+            <div class="user-info">📧 Owner Info</div>
+        </div>
+    </header>
+
+    <div class="p-6">
+        <!-- Date Filters -->
+        <div class="mb-6 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="date-picker">📅 Jul 19, 2025 - Aug 17, 2025</div>
+                <div class="employee-filter">👥 All employees</div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-5 gap-4 mb-8">
+            <div class="bg-white border rounded-lg p-4 text-center">
+                <h3 class="text-sm text-gray-600">Gross sales</h3>
+                <p class="text-2xl font-bold">₿0.00</p>
+                <p class="text-sm text-gray-500">₿0.00 (0%)</p>
+            </div>
+            <div class="bg-white border rounded-lg p-4 text-center">
+                <h3 class="text-sm text-gray-600">Refunds</h3>
+                <p class="text-2xl font-bold">₿0.00</p>
+                <p class="text-sm text-gray-500">₿0.00 (0%)</p>
+            </div>
+            <div class="bg-white border rounded-lg p-4 text-center">
+                <h3 class="text-sm text-gray-600">Discounts</h3>
+                <p class="text-2xl font-bold">₿0.00</p>
+                <p class="text-sm text-gray-500">₿0.00 (0%)</p>
+            </div>
+            <div class="bg-white border rounded-lg p-4 text-center">
+                <h3 class="text-sm text-gray-600">Net sales</h3>
+                <p class="text-2xl font-bold">₿0.00</p>
+                <p class="text-sm text-gray-500">₿0.00 (0%)</p>
+            </div>
+            <div class="bg-white border rounded-lg p-4 text-center">
+                <h3 class="text-sm text-gray-600">Gross profit</h3>
+                <p class="text-2xl font-bold">₿0.00</p>
+                <p class="text-sm text-gray-500">₿0.00 (0%)</p>
+            </div>
+        </div>
+
+        <!-- Chart Area -->
+        <div class="bg-white border rounded-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium">Gross sales</h3>
+                <div class="flex space-x-4">
+                    <select class="border rounded px-3 py-1">
+                        <option>Area</option>
+                    </select>
+                    <select class="border rounded px-3 py-1">
+                        <option>Days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="h-64 bg-gray-50 rounded flex items-center justify-center">
+                <div class="text-center text-gray-400">
+                    <div class="text-4xl mb-2">📊</div>
+                    <p>No data to display</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Table -->
+        <div class="bg-white border rounded-lg p-6">
+            <h3 class="text-lg font-medium mb-4">EXPORT</h3>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left p-3">Date</th>
+                        <th class="text-left p-3">Gross sales</th>
+                        <th class="text-left p-3">Refunds</th>
+                        <th class="text-left p-3">Discounts</th>
+                        <th class="text-left p-3">Net sales</th>
+                        <th class="text-left p-3">Cost of goods</th>
+                        <th class="text-left p-3">Gross profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="text-center py-12">
+                            <div class="text-gray-400 text-4xl mb-2">📋</div>
+                            <p class="text-gray-500 font-medium">No data to display</p>
+                            <p class="text-gray-400">There are no sales in the selected time period</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-4 flex justify-between">
+                <span>Page: 1 of 3</span>
+                <span>Rows per page: 10</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

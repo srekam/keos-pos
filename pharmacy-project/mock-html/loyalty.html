@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loyalty Settings - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-bold mb-6">Loyalty settings</h2>
+            
+            <!-- Points earning percentage -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Points earning percentage
+                </label>
+                <div class="flex items-center">
+                    <input 
+                        type="number" 
+                        value="0.00" 
+                        step="0.01" 
+                        min="0" 
+                        max="100"
+                        class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    >
+                    <span class="ml-2 text-gray-600">%</span>
+                </div>
+                <p class="mt-2 text-sm text-gray-600">
+                    Percentage of the purchase amount to be credited to the points account of the customer
+                </p>
+            </div>
+
+            <!-- Loyalty program settings -->
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Program Settings</h3>
+                    
+                    <!-- Point value -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Point Value
+                        </label>
+                        <div class="flex items-center">
+                            <span class="mr-2 text-gray-600">₿</span>
+                            <input 
+                                type="number" 
+                                value="1.00" 
+                                step="0.01" 
+                                min="0"
+                                class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            >
+                            <span class="ml-2 text-gray-600">per point</span>
+                        </div>
+                        <p class="mt-1 text-sm text-gray-600">
+                            How much each loyalty point is worth in currency
+                        </p>
+                    </div>
+
+                    <!-- Minimum redemption -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Minimum Points for Redemption
+                        </label>
+                        <input 
+                            type="number" 
+                            value="100" 
+                            min="1"
+                            class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        >
+                        <p class="mt-1 text-sm text-gray-600">
+                            Minimum points required before customer can redeem
+                        </p>
+                    </div>
+
+                    <!-- Points expiration -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Points Expiration
+                        </label>
+                        <select class="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                            <option value="never">Never expire</option>
+                            <option value="6months">6 months</option>
+                            <option value="1year">1 year</option>
+                            <option value="2years">2 years</option>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-600">
+                            When loyalty points should expire
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Customer enrollment -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Customer Enrollment</h3>
+                    
+                    <div class="flex items-center mb-4">
+                        <input 
+                            type="checkbox" 
+                            id="auto-enroll" 
+                            class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                            checked
+                        >
+                        <label for="auto-enroll" class="ml-2 text-sm text-gray-700">
+                            Automatically enroll new customers in loyalty program
+                        </label>
+                    </div>
+
+                    <div class="flex items-center mb-4">
+                        <input 
+                            type="checkbox" 
+                            id="welcome-bonus" 
+                            class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                        >
+                        <label for="welcome-bonus" class="ml-2 text-sm text-gray-700">
+                            Give welcome bonus points to new members
+                        </label>
+                    </div>
+
+                    <div class="ml-6 mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Welcome Bonus Points
+                        </label>
+                        <input 
+                            type="number" 
+                            value="50" 
+                            min="0"
+                            class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            disabled
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex justify-end space-x-4 mt-8">
+                <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    CANCEL
+                </button>
+                <button class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    SAVE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enable/disable welcome bonus input based on checkbox
+        document.getElementById('welcome-bonus').addEventListener('change', function() {
+            const input = this.parentElement.nextElementSibling.querySelector('input');
+            input.disabled = !this.checked;
+            if (this.checked) {
+                input.classList.remove('bg-gray-100');
+            } else {
+                input.classList.add('bg-gray-100');
+            }
+        });
+    </script>
+</body>
+</html>

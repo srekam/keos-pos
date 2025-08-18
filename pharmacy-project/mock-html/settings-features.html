@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Features - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-bold mb-6">Features</h2>
+            
+            <!-- Feature toggles -->
+            <div class="space-y-6">
+                <!-- Shifts -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-clock text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Shifts</h3>
+                            <p class="text-sm text-gray-600">Track cash that goes in and out of your drawer. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Time clock -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-user-clock text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Time clock</h3>
+                            <p class="text-sm text-gray-600">Track employees' clock in/out time and calculate their total work hours. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Open tickets -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-ticket-alt text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Open tickets</h3>
+                            <p class="text-sm text-gray-600">Allow to save and edit orders before completing a payment. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Kitchen printers -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-print text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Kitchen printers</h3>
+                            <p class="text-sm text-gray-600">Send orders to kitchen printer or display. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Customer displays -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-desktop text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Customer displays</h3>
+                            <p class="text-sm text-gray-600">Display order information to customers at the time of purchase. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Dining options -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-utensils text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Dining options</h3>
+                            <p class="text-sm text-gray-600">Mark orders as dine in, takeout or for delivery. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Low stock notifications -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Low stock notifications</h3>
+                            <p class="text-sm text-gray-600">Get daily email on items that are low or out of stock. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Negative stock alerts -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Negative stock alerts</h3>
+                            <p class="text-sm text-gray-600">Warn cashiers attempting to sell more inventory than available in stock. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+
+                <!-- Weight embedded barcodes -->
+                <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-barcode text-gray-500 w-6 mr-4"></i>
+                        <div>
+                            <h3 class="font-medium">Weight embedded barcodes</h3>
+                            <p class="text-sm text-gray-600">Allow to scan barcodes with embedded weight. <a href="#" class="text-blue-600">Learn more</a></p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex justify-end space-x-4 mt-8">
+                <button class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    CANCEL
+                </button>
+                <button class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    SAVE
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -157,6 +157,19 @@ services:
       - pharmacy_network
     restart: unless-stopped
 
+  # Modern POS Interface (Nginx)
+  mock-pos:
+    image: nginx:alpine
+    container_name: pharmacy_mock_pos
+    ports:
+      - "40006:80"
+    volumes:
+      - ./mock-pos:/usr/share/nginx/html:ro
+      - ./mock-pos/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - pharmacy_network
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   pgadmin_data:

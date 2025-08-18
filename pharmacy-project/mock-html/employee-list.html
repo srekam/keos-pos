@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-green-500 text-white shadow-sm">
+        <div class="flex items-center justify-between h-16 px-6">
+            <div class="flex items-center">
+                <button class="mr-4"><i class="fas fa-bars"></i></button>
+                <h1>Employee list</h1>
+            </div>
+            <div class="user-info">📧 Owner Info</div>
+        </div>
+    </header>
+
+    <div class="p-6">
+        <div class="bg-white border rounded-lg">
+            <div class="p-4 border-b flex items-center justify-between">
+                <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+                    + ADD EMPLOYEE
+                </button>
+                <div class="flex items-center">
+                    <i class="fas fa-search text-gray-400 mr-2"></i>
+                </div>
+            </div>
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left p-4">Name</th>
+                        <th class="text-left p-4">Email</th>
+                        <th class="text-left p-4">Phone</th>
+                        <th class="text-left p-4">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-4">srekam@gmail.com</td>
+                        <td class="p-4">srekam@gmail.com</td>
+                        <td class="p-4">-</td>
+                        <td class="p-4">
+                            <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-sm">Owner</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stores - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Stores</h2>
+                <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    + ADD STORE
+                </button>
+            </div>
+            
+            <!-- Stores table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Address
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Number of POS
+                            </th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Main store -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                            <i class="fas fa-store text-green-600"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">WTK</div>
+                                        <div class="text-sm text-gray-500">Main Store</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">123 Main Street</div>
+                                <div class="text-sm text-gray-500">Bangkok, Thailand 10100</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                                    1
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Store statistics -->
+            <div class="mt-8">
+                <h3 class="text-lg font-medium mb-4">Store Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-store text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-blue-600">Total Stores</div>
+                                <div class="text-2xl font-bold text-blue-900">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-cash-register text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-green-600">Active POS</div>
+                                <div class="text-2xl font-bold text-green-900">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-users text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-yellow-600">Total Employees</div>
+                                <div class="text-2xl font-bold text-yellow-900">3</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-purple-600">Monthly Sales</div>
+                                <div class="text-2xl font-bold text-purple-900">₿12.5K</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store management features -->
+            <div class="mt-8">
+                <h3 class="text-lg font-medium mb-4">Store Management</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Inventory sync -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-sync text-blue-600 mr-3"></i>
+                            <h4 class="font-medium">Inventory Synchronization</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Keep inventory levels synchronized across all store locations.
+                        </p>
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                            Configure Sync
+                        </button>
+                    </div>
+
+                    <!-- Sales reporting -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-chart-bar text-green-600 mr-3"></i>
+                            <h4 class="font-medium">Multi-Store Reporting</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            View consolidated sales reports across all store locations.
+                        </p>
+                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                            View Reports
+                        </button>
+                    </div>
+
+                    <!-- Employee management -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-user-cog text-purple-600 mr-3"></i>
+                            <h4 class="font-medium">Employee Access</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Manage employee access rights across different store locations.
+                        </p>
+                        <button class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                            Manage Access
+                        </button>
+                    </div>
+
+                    <!-- Store settings -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-cog text-gray-600 mr-3"></i>
+                            <h4 class="font-medium">Store Settings</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Configure store-specific settings like taxes, receipts, and payment methods.
+                        </p>
+                        <button class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                            Store Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information panel -->
+            <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">
+                            Multi-Store Management
+                        </h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <p>
+                                Manage multiple store locations from a single dashboard. Each store can have its own:
+                            </p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li>Inventory levels and product pricing</li>
+                                <li>Employee access and permissions</li>
+                                <li>POS devices and configurations</li>
+                                <li>Local tax rates and payment methods</li>
+                                <li>Store-specific reports and analytics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store management functionality
+        function editStore(storeId) {
+            console.log('Edit store:', storeId);
+            // Would open store edit modal
+        }
+
+        function deleteStore(storeId) {
+            if (confirm('Are you sure you want to delete this store?')) {
+                console.log('Delete store:', storeId);
+                // Would delete the store
+            }
+        }
+
+        function viewStoreDetails(storeId) {
+            console.log('View store details:', storeId);
+            // Would show detailed store information
+        }
+
+        // Add event listeners to action buttons
+        document.querySelectorAll('.fa-edit').forEach(button => {
+            button.addEventListener('click', () => editStore('wtk'));
+        });
+
+        document.querySelectorAll('.fa-trash').forEach(button => {
+            button.addEventListener('click', () => deleteStore('wtk'));
+        });
+
+        document.querySelectorAll('.fa-eye').forEach(button => {
+            button.addEventListener('click', () => viewStoreDetails('wtk'));
+        });
+    </script>
+</body>
+</html>

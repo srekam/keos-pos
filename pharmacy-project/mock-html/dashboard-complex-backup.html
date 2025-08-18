@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<!-- 
+KeOS POS Dashboard
+Version: 0.012
+Last Updated: 2025-01-27
+Changes: Enhanced background forcing with targeted element selection and longer timeout
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeOS POS - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Force browser to reload CSS -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4CAF50',
+                        secondary: '#764ba2',
+                        sidebar: '#1f2937',
+                        accent: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Sidebar States */
+        .sidebar-collapsed {
+            width: 4rem; /* 64px */
+            background: white !important;
+        }
+        
+        .sidebar-expanded {
+            width: 16rem; /* 256px */
+            background: #F8FAFC !important;
+            border-right: 1px solid #E2E8F0;
+        }
+        
+        /* Override any Tailwind background classes */
+        #sidebar.sidebar-collapsed {
+            background: white !important;
+        }
+        
+        #sidebar.sidebar-expanded {
+            background: #F8FAFC !important;
+        }
+        
+        /* Force background on expanded sidebar - override everything */
+        .sidebar-expanded,
+        .sidebar-expanded *:not(.menu-icon):not(i):not(.sidebar-text > span) {
+            background-color: #F8FAFC !important;
+        }
+        
+        /* Specific overrides for menu items in expanded state */
+        .sidebar-expanded .nav-menu-item button,
+        .sidebar-expanded .nav-menu-item a,
+        .sidebar-expanded .nav-section {
+            background-color: transparent !important;
+        }
+        
+        .sidebar-expanded .nav-menu-item:hover button,
+        .sidebar-expanded .nav-menu-item:hover a {
+            background-color: #E2E8F0 !important;
+        }
+        
+        /* Nuclear option - force background everywhere in expanded sidebar */
+        #sidebar.sidebar-expanded,
+        #sidebar.sidebar-expanded > *,
+        #sidebar.sidebar-expanded nav,
+        #sidebar.sidebar-expanded .nav-menu-item,
+        #sidebar.sidebar-expanded .p-4,
+        #sidebar.sidebar-expanded .border-b {
+            background: #F8FAFC !important;
+        }
+        
+        /* Ensure the container div also has proper background */
+        .sidebar-expanded > div {
+            background: transparent !important;
+        }
+        
+        /* Make sure the toggle button area is transparent in expanded state */
+        .sidebar-expanded .p-4 {
+            background: transparent !important;
+        }
+        
+        .sidebar-expanded .border-b {
+            border-color: rgba(226, 232, 240, 0.5) !important;
+        }
+        
+        /* Make sure nav and menu items inherit background */
+        .sidebar-expanded nav,
+        .sidebar-expanded .nav-menu-item {
+            background: transparent !important;
+        }
+        
+        /* Override any white backgrounds in expanded state */
+        .sidebar-expanded .nav-section,
+        .sidebar-expanded .nav-section:hover {
+            background: transparent !important;
+        }
+        
+        .sidebar-text {
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .sidebar-collapsed .sidebar-text {
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            overflow: hidden;
+            margin-left: 0 !important;
+        }
+        
+        .sidebar-expanded .sidebar-text {
+            opacity: 1;
+            pointer-events: auto;
+            width: auto;
+            overflow: visible;
+            margin-left: 0.75rem !important;
+        }
+        
+        .sidebar-collapsed .sidebar-chevron {
+            opacity: 0;
+        }
+        
+        .sidebar-expanded .sidebar-chevron {
+            opacity: 1;
+        }
+        
+        .sidebar-collapsed .nav-submenu {
+            display: none !important;
+        }
+        
+        .sidebar-collapsed .nav-submenu .sidebar-text {
+            display: none;
+        }
+        
+        .sidebar-expanded .nav-submenu {
+            display: block;
+        }
+        
+        .sidebar-expanded .flyout-popover {
+            display: none !important;
+        }
+        
+        .sidebar-collapsed .flyout-popover {
+            display: block;
+        }
+        
+        /* Main content adjustment */
+        .content-collapsed {
+            margin-left: 4rem; /* 64px */
+        }
+        
+        .content-expanded {
+            margin-left: 16rem; /* 256px */
+        }
+        
+        @media (max-width: 768px) {
+            .content-collapsed,
+            .content-expanded {
+                margin-left: 0;
+            }
+        }
+        
+        /* Professional Flyout Menu Design */
+        .nav-menu-item {
+            position: relative;
+            margin-bottom: 4px;
+        }
+        
+        .nav-menu-item:hover .menu-icon {
+            background: #ffffff;
+            color: #4F46E5;
+        }
+        
+        /* Flyout Popover */
+        .flyout-popover {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 100vw;
+            max-width: max-content;
+            overflow: visible;
+            background: transparent;
+            padding: 0 16px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(4px);
+            transition: opacity 200ms ease-out, visibility 200ms ease-out, transform 200ms ease-out;
+            z-index: 1000;
+            margin-left: 20px;
+            pointer-events: none;
+        }
+        
+        .sidebar-collapsed .nav-menu-item:hover .flyout-popover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .flyout-content {
+            width: 100%;
+            max-width: 448px;
+            flex: auto;
+            overflow: hidden;
+            border-radius: 24px;
+            background: white;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            outline: 1px solid rgba(17, 24, 39, 0.05);
+        }
+        
+        .flyout-items {
+            padding: 16px;
+        }
+        
+        .flyout-item {
+            position: relative;
+            display: flex;
+            gap: 24px;
+            border-radius: 8px;
+            padding: 16px;
+            transition: background-color 150ms ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .flyout-item:hover {
+            background: #F9FAFB;
+        }
+        
+        .flyout-icon {
+            margin-top: 4px;
+            display: flex;
+            width: 44px;
+            height: 44px;
+            flex: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #F9FAFB;
+            transition: all 150ms ease;
+        }
+        
+        .flyout-item:hover .flyout-icon {
+            background: white;
+        }
+        
+        .flyout-icon i {
+            width: 24px;
+            height: 24px;
+            color: #6B7280;
+            transition: color 150ms ease;
+        }
+        
+        .flyout-item:hover .flyout-icon i {
+            color: #4F46E5;
+        }
+        
+        .flyout-text h3 {
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+            position: relative;
+        }
+        
+        .flyout-text p {
+            margin: 4px 0 0 0;
+            color: #6B7280;
+        }
+        
+        .flyout-text h3::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+        }
+        
+        /* Footer Actions */
+        .flyout-footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid rgba(17, 24, 39, 0.05);
+            background: #F9FAFB;
+        }
+        
+        .flyout-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            font-weight: 600;
+            color: #111827;
+            text-decoration: none;
+            transition: background-color 150ms ease;
+        }
+        
+        .flyout-footer a:hover {
+            background: #F3F4F6;
+        }
+        
+        .flyout-footer a:first-child {
+            border-right: 1px solid rgba(17, 24, 39, 0.05);
+        }
+        
+        .flyout-footer i {
+            width: 20px;
+            height: 20px;
+            color: #9CA3AF;
+            flex: none;
+        }
+        
+        /* Menu icon styling */
+        .menu-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: #F9FAFB;
+            color: #6B7280;
+            transition: all 150ms ease;
+        }
+        
+        /* Menu icon styling for collapsed state */
+        .sidebar-collapsed .nav-menu-item .menu-icon {
+            background: #F3F4F6;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .sidebar-collapsed .nav-menu-item:hover .menu-icon {
+            background: white;
+            color: #4F46E5;
+            border-color: #4F46E5;
+        }
+        
+        /* Menu icon styling for expanded state */
+        .sidebar-expanded .nav-menu-item .menu-icon {
+            background: #E2E8F0;
+            border: 1px solid #CBD5E1;
+        }
+        
+        .sidebar-expanded .nav-menu-item:hover .menu-icon {
+            background: #4F46E5;
+            color: white;
+            border-color: #4F46E5;
+        }
+        
+        /* Expanded sidebar styling */
+        .sidebar-expanded {
+            padding: 0;
+        }
+        
+        .sidebar-expanded .nav-menu-item {
+            margin: 2px 0;
+        }
+        
+        .sidebar-expanded .nav-menu-item button,
+        .sidebar-expanded .nav-menu-item a {
+            margin: 0 8px;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        
+        .sidebar-expanded .nav-menu-item:hover button,
+        .sidebar-expanded .nav-menu-item:hover a {
+            background: #E2E8F0 !important;
+        }
+        
+        .sidebar-expanded .nav-menu-item button:hover,
+        .sidebar-expanded .nav-menu-item a:hover {
+            background: #E2E8F0 !important;
+        }
+        
+        /* Menu icon alignment in expanded state */
+        .sidebar-expanded .menu-icon {
+            margin-right: 12px;
+            min-width: 44px;
+        }
+        
+        /* Submenu styling for expanded state */
+        .sidebar-expanded .nav-submenu {
+            background: rgba(241, 245, 249, 0.5);
+            border-radius: 8px;
+            margin: 4px 8px 8px 8px;
+            padding: 8px 0;
+        }
+        
+        .sidebar-expanded .nav-submenu a {
+            margin: 1px 16px;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        
+        .sidebar-expanded .nav-submenu a:hover {
+            background: #E2E8F0;
+        }
+        
+        /* Toggle button styling */
+        .sidebar-collapsed #sidebarToggleBtn {
+            justify-content: center;
+            padding: 12px;
+        }
+        
+        .sidebar-collapsed #sidebarToggleBtn .menu-icon {
+            margin: 0;
+        }
+        
+        .sidebar-expanded #sidebarToggleBtn {
+            justify-content: flex-start;
+            padding: 12px 16px;
+        }
+        
+        .sidebar-expanded #sidebarToggleBtn .menu-icon {
+            margin-right: 12px;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-primary text-white shadow-sm">
+        <div class="flex items-center justify-between h-16 px-6">
+            <div class="flex items-center">
+                <button id="sidebarToggle" class="md:hidden text-white hover:text-gray-200 mr-4">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 id="pageTitle" class="text-xl font-semibold">KeOS POS <span class="text-xs opacity-75">v0.012</span></h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="user-info">
+                    <span>📧 srekam@gmail.com</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-16 shadow-lg transform -translate-x-full md:translate-x-0 transition-all duration-300 ease-in-out mt-16 sidebar-collapsed">
+            <!-- Sidebar Toggle Button -->
+            <div class="p-4 border-b border-gray-200">
+                <button id="sidebarToggleBtn" class="flex items-center w-full p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" title="Toggle sidebar">
+                    <div class="menu-icon mr-3">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <span class="sidebar-text font-medium">Menu</span>
+                    <span class="sidebar-text text-xs opacity-60 ml-2">v0.012</span>
+                </button>
+            </div>
+            
+            <nav class="mt-4 px-2">
+                <!-- Reports Section -->
+                <div class="nav-menu-item">
+                    <button class="nav-section flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-section="reports" title="Reports">
+                        <div class="menu-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <span class="ml-3 sidebar-text transition-opacity duration-200 whitespace-nowrap">Reports</span>
+                        <i class="fas fa-chevron-down ml-auto transform transition-transform sidebar-chevron"></i>
+                    </button>
+                    
+                    <!-- Professional Flyout Menu -->
+                    <div class="flyout-popover">
+                        <div class="flyout-content">
+                            <div class="flyout-items">
+                                <a href="#" class="flyout-item nav-item" data-page="sales-summary">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Sales Summary</h3>
+                                        <p>Complete overview of daily, weekly and monthly sales performance</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="sales-by-item">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Sales by Item</h3>
+                                        <p>Detailed sales breakdown by individual products and items</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="sales-by-category">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-tags"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Sales by Category</h3>
+                                        <p>Sales analysis grouped by product categories and classifications</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="sales-by-employee">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Sales by Employee</h3>
+                                        <p>Performance metrics and sales tracking by staff members</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="receipts">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-receipt"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Receipts</h3>
+                                        <p>Transaction receipt management and billing records</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="flyout-footer">
+                                <a href="#" data-page="discounts-report">
+                                    <i class="fas fa-percentage"></i>
+                                    View Discounts
+                                </a>
+                                <a href="#" data-page="taxes-report">
+                                    <i class="fas fa-calculator"></i>
+                                    Tax Reports
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Traditional submenu for expanded state -->
+                    <div class="nav-submenu ml-6 hidden">
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="sales-summary" title="Sales summary">
+                            <i class="fas fa-chart-bar min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Sales summary</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="sales-by-item" title="Sales by item">
+                            <i class="fas fa-box min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Sales by item</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="sales-by-category" title="Sales by category">
+                            <i class="fas fa-tags min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Sales by category</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="sales-by-employee" title="Sales by employee">
+                            <i class="fas fa-user-tie min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Sales by employee</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="receipts" title="Receipts">
+                            <i class="fas fa-receipt min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Receipts</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="discounts-report" title="Discounts">
+                            <i class="fas fa-percentage min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Discounts</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="taxes-report" title="Taxes">
+                            <i class="fas fa-calculator min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Taxes</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Items Section -->
+                <div class="nav-menu-item">
+                    <button class="nav-section flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-section="items" title="Items">
+                        <div class="menu-icon">
+                            <i class="fas fa-shopping-basket"></i>
+                        </div>
+                        <span class="ml-3 sidebar-text transition-opacity duration-200 whitespace-nowrap">Items</span>
+                        <i class="fas fa-chevron-down ml-auto transform transition-transform sidebar-chevron"></i>
+                    </button>
+                    
+                    <!-- Professional Flyout Menu -->
+                    <div class="flyout-popover">
+                        <div class="flyout-content">
+                            <div class="flyout-items">
+                                <a href="#" class="flyout-item nav-item" data-page="item-list">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-list"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Item List</h3>
+                                        <p>Complete product catalog and inventory management</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="categories">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-folder"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Categories</h3>
+                                        <p>Product categorization and organization system</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="modifiers">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-sliders-h"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Modifiers</h3>
+                                        <p>Product customization options and variants</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="flyout-item nav-item" data-page="discounts-items">
+                                    <div class="flyout-icon">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="flyout-text">
+                                        <h3>Discounts</h3>
+                                        <p>Product discount rules and promotional pricing</p>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="flyout-footer">
+                                <a href="#" data-page="item-list">
+                                    <i class="fas fa-plus"></i>
+                                    Add Item
+                                </a>
+                                <a href="#" data-page="categories">
+                                    <i class="fas fa-upload"></i>
+                                    Import Items
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Traditional submenu for expanded state -->
+                    <div class="nav-submenu ml-6 hidden">
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="item-list" title="Item list">
+                            <i class="fas fa-list min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Item list</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="categories" title="Categories">
+                            <i class="fas fa-folder min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Categories</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="modifiers" title="Modifiers">
+                            <i class="fas fa-sliders-h min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Modifiers</span>
+                        </a>
+                        <a href="#" class="nav-item block px-3 py-2 text-sm text-gray-600 hover:text-primary whitespace-nowrap" data-page="discounts-items" title="Discounts">
+                            <i class="fas fa-tag min-w-[20px]"></i>
+                            <span class="ml-3 sidebar-text">Discounts</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Inventory Management Section -->
+                <div class="nav-menu-item">
+                    <button class="nav-section flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-section="inventory" title="Inventory">
+                        <div class="menu-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <span class="ml-3 sidebar-text transition-opacity duration-200 whitespace-nowrap">Inventory</span>
+                    </button>
+                </div>
+
+                <!-- Employees Section -->
+                <div class="nav-menu-item">
+                    <button class="nav-section flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-section="employees" title="Employees">
+                        <div class="menu-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="ml-3 sidebar-text transition-opacity duration-200 whitespace-nowrap">Employees</span>
+                    </button>
+                </div>
+
+                <!-- Customers Section -->
+                <div class="nav-menu-item">
+                    <a href="#" class="nav-item flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-page="customer-base" title="Customers">
+                        <i class="fas fa-user-friends min-w-[20px]"></i>
+                        <span class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Customers</span>
+                    </a>
+                </div>
+
+                <!-- Integrations Section -->
+                <div class="nav-menu-item">
+                    <button class="nav-section flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-section="integrations" title="Integrations">
+                        <i class="fas fa-plug min-w-[20px]"></i>
+                        <span class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Integrations</span>
+                    </button>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="nav-menu-item">
+                    <a href="#" class="nav-item flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-page="settings" title="Settings">
+                        <i class="fas fa-cog min-w-[20px]"></i>
+                        <span class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Settings</span>
+                    </a>
+                </div>
+
+                <!-- Help Section -->
+                <div class="nav-menu-item">
+                    <a href="#" class="nav-item flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg" data-page="help" title="Help">
+                        <i class="fas fa-question-circle min-w-[20px]"></i>
+                        <span class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Help</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="mainContent" class="flex-1 mt-16 p-6 content-collapsed transition-all duration-300">
+            <div id="content-area">
+                <div class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2">Loading Dashboard...</h2>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden hidden"></div>
+
+    <script>
+        // Global variables
+        let currentPage = '';
+        let sidebarExpanded = false;
+
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const pageTitle = document.getElementById('pageTitle');
+        const contentArea = document.getElementById('content-area');
+        const mainContent = document.getElementById('mainContent');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            
+            // Ensure sidebar starts collapsed
+            if (sidebarExpanded) {
+                toggleSidebarExpansion();
+            }
+            
+                    // Load default page
+        loadPage('sales-summary');
+        
+        // Version tracking
+        console.log('🚀 KeOS POS Dashboard v0.012 - Last Updated: 2025-01-27');
+        console.log('📝 Recent Changes: Enhanced background forcing with targeted element selection and longer timeout');
+            // Set first menu item as active
+            const firstItem = document.querySelector('[data-page="sales-summary"]');
+            if (firstItem) {
+                setActiveItem(firstItem);
+            }
+        });
+
+        function setupEventListeners() {
+            // Sidebar toggle (mobile hamburger)
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', toggleSidebarMobile);
+            }
+            
+            // Sidebar toggle button (in sidebar)
+            if (sidebarToggleBtn) {
+                sidebarToggleBtn.addEventListener('click', toggleSidebarExpansion);
+            }
+            
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Navigation sections
+            document.querySelectorAll('.nav-section').forEach(section => {
+                section.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleSection(this);
+                });
+            });
+
+            // Navigation items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    if (page) {
+                        loadPage(page);
+                        setActiveItem(this);
+                        if (window.innerWidth < 768) {
+                            closeSidebar();
+                        }
+                    }
+                });
+            });
+        }
+
+        function toggleSidebarMobile() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+
+        function toggleSidebarExpansion() {
+            sidebarExpanded = !sidebarExpanded;
+            console.log('Toggling sidebar. Expanded:', sidebarExpanded);
+            
+            if (sidebarExpanded) {
+                // Expand sidebar
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.classList.remove('content-collapsed');
+                mainContent.classList.add('content-expanded');
+                
+                // Force background with inline styles - TARGETED FIX
+                setTimeout(() => {
+                    sidebar.style.backgroundColor = '#F8FAFC !important';
+                    
+                    // Force all child elements to have transparent background
+                    const allElements = sidebar.querySelectorAll('*');
+                    allElements.forEach(element => {
+                        if (!element.classList.contains('menu-icon') && 
+                            element.tagName !== 'I' && 
+                            !element.querySelector('i') &&
+                            !element.classList.contains('flyout-content')) {
+                            element.style.backgroundColor = 'transparent !important';
+                            element.style.background = 'transparent !important';
+                        }
+                    });
+                    
+                    // Specifically target nav and menu containers
+                    const nav = sidebar.querySelector('nav');
+                    const toggleDiv = sidebar.querySelector('.p-4');
+                    const menuItems = sidebar.querySelectorAll('.nav-menu-item');
+                    
+                    if (nav) {
+                        nav.style.backgroundColor = 'transparent !important';
+                        nav.style.background = 'transparent !important';
+                    }
+                    if (toggleDiv) {
+                        toggleDiv.style.backgroundColor = 'transparent !important';
+                        toggleDiv.style.background = 'transparent !important';
+                    }
+                    menuItems.forEach(item => {
+                        item.style.backgroundColor = 'transparent !important';
+                        item.style.background = 'transparent !important';
+                    });
+                    
+                }, 50);
+                
+                console.log('Sidebar expanded - classes:', sidebar.className);
+            } else {
+                // Collapse sidebar
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.classList.remove('content-expanded');
+                mainContent.classList.add('content-collapsed');
+                
+                // Reset background for collapsed state
+                sidebar.style.backgroundColor = 'white';
+                const allElements = sidebar.querySelectorAll('*');
+                allElements.forEach(element => {
+                    element.style.backgroundColor = '';
+                });
+                
+                console.log('Sidebar collapsed - classes:', sidebar.className);
+            }
+        }
+
+        function toggleSection(button) {
+            // Only allow section expansion when sidebar is expanded
+            if (!sidebarExpanded) {
+                toggleSidebarExpansion();
+                return;
+            }
+            
+            const submenu = button.nextElementSibling;
+            const chevron = button.querySelector('.fa-chevron-down');
+            
+            if (submenu) {
+                submenu.classList.toggle('hidden');
+            }
+            if (chevron) {
+                chevron.classList.toggle('rotate-180');
+            }
+        }
+
+        function setActiveItem(item) {
+            // Remove active class from all items
+            document.querySelectorAll('.nav-item').forEach(i => {
+                i.classList.remove('text-primary', 'bg-blue-50');
+                i.classList.add('text-gray-600');
+            });
+            
+            // Add active class to clicked item
+            item.classList.remove('text-gray-600');
+            item.classList.add('text-primary', 'bg-blue-50');
+        }
+
+        async function loadPage(page) {
+            currentPage = page;
+            updatePageTitle(page);
+            
+            // Show loading state
+            contentArea.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2">Loading ${formatPageTitle(page)}</h2>
+                </div>
+            `;
+            
+            try {
+                // Fetch the page content
+                const response = await fetch(`/${page}.html`);
+                if (response.ok) {
+                    const html = await response.text();
+                    
+                    // Extract just the content inside the main/body area (excluding header)
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Get content from the page (div with p-6 class contains the main content)
+                    const content = doc.querySelector('div.p-6');
+                    
+                    if (content) {
+                        contentArea.innerHTML = content.innerHTML;
+                    } else {
+                        // Fallback - try to get body content excluding header
+                        const body = doc.querySelector('body');
+                        const header = doc.querySelector('header');
+                        if (body && header) {
+                            // Clone body and remove header
+                            const bodyClone = body.cloneNode(true);
+                            const headerInClone = bodyClone.querySelector('header');
+                            if (headerInClone) {
+                                headerInClone.remove();
+                            }
+                            contentArea.innerHTML = bodyClone.innerHTML;
+                        } else {
+                            throw new Error('Could not find page content');
+                        }
+                    }
+                } else {
+                    throw new Error(`Page ${page}.html not found`);
+                }
+            } catch (error) {
+                console.error('Error loading page:', error);
+                contentArea.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-red-500 text-4xl mb-4">⚠️</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Error Loading ${formatPageTitle(page)}</h2>
+                        <p class="text-gray-600">Could not load page content</p>
+                        <button onclick="loadPage('${page}')" class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-green-600">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function updatePageTitle(page) {
+            const title = formatPageTitle(page);
+            pageTitle.textContent = title;
+        }
+
+        function formatPageTitle(page) {
+            return page.split('-').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        // Responsive handling
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+    </script>
+</body>
+</html>

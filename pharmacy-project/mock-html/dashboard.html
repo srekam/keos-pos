@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<!-- 
+KeOS POS Dashboard - COLORFUL ICONS WITH TOOLTIPS
+Version: 0.024
+Last Updated: 2025-08-18
+Changes: Moved Settings to top header menu aligned right for better accessibility
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeOS POS - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* ULTRA MINIMAL CSS WITH CIRCULAR ICONS AND MAGNETIC ZOOM */
+        .sidebar {
+            width: 60px;
+            background: white;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .sidebar.expanded {
+            width: 250px;
+            background: #f8fafc;
+        }
+        
+        .main-content {
+            margin-left: 60px;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .main-content.expanded {
+            margin-left: 250px;
+        }
+        
+        .menu-text {
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar.expanded .menu-text {
+            width: auto;
+            opacity: 1;
+        }
+        
+        .submenu {
+            display: none;
+        }
+        
+        .sidebar.expanded .submenu.show {
+            display: block;
+        }
+        
+        /* Circular icon styling with magnetic zoom effect */
+        .menu-btn {
+            width: 44px;
+            height: 44px;
+            margin: 4px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f3f4f6;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .menu-btn:hover {
+            background: #e5e7eb;
+            transform: scale(1.1);
+        }
+        
+        .menu-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .menu-btn.active i {
+            color: white !important;
+        }
+        
+        .sidebar.expanded .menu-btn {
+            width: 100%;
+            border-radius: 8px;
+            justify-content: flex-start;
+            padding: 0 12px;
+            overflow: visible;
+        }
+        
+        .sidebar.expanded .menu-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Reset icon positioning for expanded sidebar */
+        .sidebar.expanded .menu-btn i {
+            position: static;
+            transform: none;
+            width: auto;
+            height: auto;
+            display: inline;
+        }
+        
+        /* Magnetic zoom effect for collapsed sidebar */
+        .sidebar:not(.expanded) .menu-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Icon styling with vibrant colors and perfect centering */
+        .menu-btn i {
+            font-size: 18px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Enhanced colorful icon effects */
+        .menu-btn:hover i {
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        /* Individual icon color enhancements */
+        .menu-btn .fa-chart-line { color: #3b82f6 !important; } /* Blue */
+        .menu-btn .fa-box { color: #10b981 !important; } /* Green */
+        .menu-btn .fa-warehouse { color: #f59e0b !important; } /* Orange */
+        .menu-btn .fa-users { color: #8b5cf6 !important; } /* Purple */
+        .menu-btn .fa-user { color: #14b8a6 !important; } /* Teal */
+        .menu-btn .fa-plug { color: #ec4899 !important; } /* Pink */
+        .menu-btn .fa-cog { color: #6366f1 !important; } /* Indigo */
+        .menu-btn .fa-question-circle { color: #eab308 !important; } /* Yellow */
+        .menu-btn .fa-bars { color: #ef4444 !important; } /* Red */
+        
+        /* Perfect centering for collapsed sidebar icons */
+        .sidebar:not(.expanded) .menu-btn {
+            position: relative;
+            overflow: visible;
+        }
+        
+        .sidebar:not(.expanded) .menu-btn i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Icon background highlight for better visibility */
+        .sidebar:not(.expanded) .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .sidebar:not(.expanded) .menu-btn:hover::before {
+            opacity: 1;
+        }
+        
+        /* Speech bubble tooltip styles */
+        .tooltip {
+            position: absolute;
+            background: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            pointer-events: none;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        /* Speech bubble arrow pointing left */
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid #1f2937;
+        }
+        
+        /* Tooltip positioning for collapsed sidebar */
+        .sidebar:not(.expanded) .menu-btn .tooltip {
+            left: 60px;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+        }
+        
+        /* Show tooltip on hover */
+        .sidebar:not(.expanded) .menu-btn:hover .tooltip {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(-50%) translateX(0) !important;
+        }
+        
+        /* Force tooltip visibility for testing */
+        .sidebar:not(.expanded) .menu-btn .tooltip {
+            background: #1f2937 !important;
+            color: white !important;
+            z-index: 99999 !important;
+        }
+        
+
+        
+        /* Hide tooltips in expanded sidebar */
+        .sidebar.expanded .tooltip {
+            display: none !important;
+        }
+        
+        /* INSTANT TOOLTIP SYSTEM */
+        .instant-tooltip {
+            position: absolute;
+            left: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.1s ease;
+            z-index: 10000;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Arrow pointing to icon */
+        .instant-tooltip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -4px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-right: 4px solid #1f2937;
+        }
+        
+        /* Show instantly on hover - only in collapsed sidebar */
+        .sidebar:not(.expanded) .menu-btn:hover .instant-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.05s ease;
+        }
+        
+        /* Hide in expanded sidebar */
+        .sidebar.expanded .instant-tooltip {
+            display: none;
+        }
+        
+        /* Magnetic effect container */
+        .magnetic-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Enhanced circular icon effects with macOS-style gradients */
+        .sidebar:not(.expanded) .menu-btn {
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
+            transform: scale(1.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Active state for circular icons */
+        .sidebar:not(.expanded) .menu-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border-color: #1d4ed8;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Colorful background effects on hover */
+        .sidebar:not(.expanded) .menu-btn:hover {
+            background: linear-gradient(135deg, #fefefe, #f8fafc);
+        }
+        
+        /* Individual button color themes */
+        .sidebar:not(.expanded) .menu-btn[onclick*="reports"]:hover {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="items"]:hover {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="inventory"]:hover {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="employees"]:hover {
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="customer"]:hover {
+            background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+            border-color: rgba(20, 184, 166, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="apps"]:hover {
+            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+            border-color: rgba(236, 72, 153, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="settings"]:hover {
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        .sidebar:not(.expanded) .menu-btn[onclick*="help"]:hover {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border-color: rgba(234, 179, 8, 0.4);
+        }
+        
+        /* Smooth transitions for all states */
+        .menu-btn * {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-green-500 text-white h-16 z-30">
+        <div class="flex items-center justify-between h-full px-6">
+            <h1 class="text-xl font-semibold">KeOS POS <span class="text-xs opacity-75">v0.024</span></h1>
+            <div class="flex items-center space-x-4">
+                <span>📧 srekam@gmail.com</span>
+                <div class="relative">
+                    <button id="headerSettingsBtn" class="flex items-center space-x-2 bg-green-400 hover:bg-green-300 px-3 py-2 rounded-md transition-colors" title="⚙️ System Configuration">
+                        <i class="fas fa-cog text-white"></i>
+                        <span class="text-sm font-medium">Settings</span>
+                    </button>
+                    <div id="headerSettingsMenu" class="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border hidden z-50">
+                        <div class="py-2">
+                            <a href="#" onclick="loadPage('settings-features')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings Features</a>
+                            <a href="#" onclick="loadPage('billing-subscriptions')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Billing & Subscriptions</a>
+                            <a href="#" onclick="loadPage('payment-types')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Payment Types</a>
+                            <a href="#" onclick="loadPage('loyalty')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Loyalty</a>
+                            <a href="#" onclick="loadPage('taxes')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Taxes</a>
+                            <a href="#" onclick="loadPage('receipt')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Receipt</a>
+                            <a href="#" onclick="loadPage('open-tickets')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Open Tickets</a>
+                            <a href="#" onclick="loadPage('kitchen-printers')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Kitchen Printers</a>
+                            <a href="#" onclick="loadPage('dining-options')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dining Options</a>
+                            <a href="#" onclick="loadPage('stores')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Stores</a>
+                            <a href="#" onclick="loadPage('create-pos')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">POS Devices</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-16 left-0 h-screen sidebar shadow-lg z-20">
+        <!-- Toggle Button -->
+        <div class="border-b border-gray-200">
+            <button id="toggleBtn" class="menu-btn hover:bg-gray-200 transition-colors" title="☰ Toggle Menu">
+                <i class="fas fa-bars text-red-500"></i>
+                <span class="menu-text ml-3">Menu <span class="text-xs opacity-60">v0.024</span></span>
+                <div class="instant-tooltip">☰ Menu</div>
+            </button>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="p-2">
+            <!-- Analysis -->
+            <div>
+                <button onclick="toggleMenu('reports')" class="menu-btn hover:bg-gray-200 transition-colors" title="📊 Sales Analysis & Reports">
+                    <i class="fas fa-chart-line text-blue-500"></i>
+                    <span class="menu-text ml-3">Analysis</span>
+                    <div class="instant-tooltip">📊 Analysis</div>
+                </button>
+                <div id="reports-menu" class="submenu ml-4 mt-1 space-y-1">
+                    <a href="#" onclick="loadPage('sales-summary')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Performance overview</a>
+                    <a href="#" onclick="loadPage('sales-by-item')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Item Analysis</a>
+                    <a href="#" onclick="loadPage('sales-by-category')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Category Analysis</a>
+                    <a href="#" onclick="loadPage('sales-by-employee')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Pharmacist Analysis</a>
+                    <a href="#" onclick="loadPage('sales-by-payment-type')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Payment Analysis</a>
+                    <a href="#" onclick="loadPage('receipts')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Billing</a>
+                    <a href="#" onclick="loadPage('sales-by-modifier')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Add-on Analysis</a>
+                    <a href="#" onclick="loadPage('discounts-report')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Discount</a>
+                    <a href="#" onclick="loadPage('taxes-report')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">VAT</a>
+                    <a href="#" onclick="loadPage('shifts-report')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Work Timing</a>
+                </div>
+            </div>
+            
+            <!-- Items -->
+            <div>
+                <button onclick="toggleMenu('items')" class="menu-btn hover:bg-gray-200 transition-colors" title="🛍️ Product Catalog & Items">
+                    <i class="fas fa-box text-green-500"></i>
+                    <span class="menu-text ml-3">Items</span>
+                    <div class="instant-tooltip">🛍️ Items</div>
+                </button>
+                <div id="items-menu" class="submenu ml-4 mt-1 space-y-1">
+                    <a href="#" onclick="loadPage('item-list')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Item list</a>
+                    <a href="#" onclick="loadPage('categories')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Categories</a>
+                    <a href="#" onclick="loadPage('modifiers')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Modifiers</a>
+                    <a href="#" onclick="loadPage('discounts-items')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Discounts</a>
+                </div>
+            </div>
+            
+            <!-- Inventory -->
+            <div>
+                <button onclick="toggleMenu('inventory')" class="menu-btn hover:bg-gray-200 transition-colors" title="🚚 Stock Management & Supply">
+                    <i class="fas fa-warehouse text-orange-500"></i>
+                    <span class="menu-text ml-3">Inventory</span>
+                    <div class="instant-tooltip">🚚 Inventory</div>
+                </button>
+                <div id="inventory-menu" class="submenu ml-4 mt-1 space-y-1">
+                    <a href="#" onclick="loadPage('purchase-orders')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Purchase Orders</a>
+                    <a href="#" onclick="loadPage('transfer-orders')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Transfer Orders</a>
+                    <a href="#" onclick="loadPage('stock-adjustments')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Stock Adjustments</a>
+                    <a href="#" onclick="loadPage('inventory-counts')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Inventory Counts</a>
+                    <a href="#" onclick="loadPage('productions')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Productions</a>
+                    <a href="#" onclick="loadPage('suppliers')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Suppliers</a>
+                    <a href="#" onclick="loadPage('inventory-history')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Inventory History</a>
+                    <a href="#" onclick="loadPage('inventory-valuation')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Inventory Valuation</a>
+                </div>
+            </div>
+            
+            <!-- Employees -->
+            <div>
+                <button onclick="toggleMenu('employees')" class="menu-btn hover:bg-gray-200 transition-colors" title="👥 Staff Management & HR">
+                    <i class="fas fa-users text-purple-500"></i>
+                    <span class="menu-text ml-3">Employees</span>
+                    <div class="instant-tooltip">👥 Employees</div>
+                </button>
+                <div id="employees-menu" class="submenu ml-4 mt-1 space-y-1">
+                    <a href="#" onclick="loadPage('employee-list')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Employee list</a>
+                    <a href="#" onclick="loadPage('access-rights')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Access rights</a>
+                    <a href="#" onclick="loadPage('timecards')" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded">Timecards</a>
+                </div>
+            </div>
+            
+            <!-- Customers -->
+            <div>
+                <button onclick="loadPage('customer-base')" class="menu-btn hover:bg-gray-200 transition-colors" title="👤 Customer Database & CRM">
+                    <i class="fas fa-user text-teal-500"></i>
+                    <span class="menu-text ml-3">Customers</span>
+                    <div class="instant-tooltip">👤 Customers</div>
+                </button>
+            </div>
+            
+            <!-- Integrations -->
+            <div>
+                <button onclick="loadPage('apps')" class="menu-btn hover:bg-gray-200 transition-colors" title="🔗 Third-party Apps & APIs">
+                    <i class="fas fa-plug text-pink-500"></i>
+                    <span class="menu-text ml-3">Integrations</span>
+                    <div class="instant-tooltip">🔗 Integrations</div>
+                </button>
+            </div>
+            
+
+            
+            <!-- Help -->
+            <div>
+                <button onclick="loadPage('help')" class="menu-btn hover:bg-gray-200 transition-colors" title="❓ Support & Documentation">
+                    <i class="fas fa-question-circle text-yellow-500"></i>
+                    <span class="menu-text ml-3">Help</span>
+                    <div class="instant-tooltip">❓ Help</div>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="main-content pt-16 min-h-screen">
+        <div id="content-area" class="p-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-2xl font-bold mb-4">Welcome to KeOS POS</h2>
+                <p class="text-gray-600">Select a menu item to get started.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // SIMPLE CLEAN JAVASCRIPT WITH MAGNETIC ZOOM EFFECT
+        
+        // Toggle sidebar
+        document.getElementById('toggleBtn').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('expanded');
+        });
+        
+        // Toggle submenu
+        function toggleMenu(menuName) {
+            console.log('🔧 Toggling menu:', menuName);
+            
+            // Close all other menus
+            document.querySelectorAll('.submenu').forEach(menu => {
+                if (menu.id !== menuName + '-menu') {
+                    menu.classList.remove('show');
+                }
+            });
+            
+            // Toggle the clicked menu
+            const menu = document.getElementById(menuName + '-menu');
+            if (menu) {
+                menu.classList.toggle('show');
+                console.log('📋 Menu classes after toggle:', menu.classList.toString());
+            } else {
+                console.error('❌ Menu not found:', menuName + '-menu');
+            }
+            
+            // Auto-expand sidebar if collapsed
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('expanded')) {
+                sidebar.classList.add('expanded');
+                document.getElementById('mainContent').classList.add('expanded');
+                console.log('📱 Sidebar expanded');
+            }
+        }
+        
+        // Load page content
+        async function loadPage(pageName) {
+            console.log('📄 Loading page:', pageName + '.html');
+            try {
+                const response = await fetch(`${pageName}.html`);
+                if (response.ok) {
+                    console.log('✅ Page loaded successfully:', pageName);
+                    const html = await response.text();
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    
+                    const mainContent = tempDiv.querySelector('.p-6') || 
+                                      tempDiv.querySelector('main') || 
+                                      tempDiv.querySelector('body') || tempDiv;
+                    
+                    document.getElementById('content-area').innerHTML = mainContent.innerHTML;
+                    
+                    // Update page title to show current page
+                    const pageTitle = document.getElementById('pageTitle');
+                    if (pageTitle) {
+                        pageTitle.textContent = `KeOS POS - ${pageName.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
+                    }
+                } else {
+                    console.error('❌ Page not found:', response.status, response.statusText);
+                    document.getElementById('content-area').innerHTML = `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h2 class="text-2xl font-bold mb-4 text-red-600">Page Not Found</h2>
+                            <p class="text-gray-600">The page "${pageName}.html" could not be loaded.</p>
+                            <p class="text-sm text-gray-500 mt-2">Status: ${response.status} ${response.statusText}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Error loading page:', error);
+                document.getElementById('content-area').innerHTML = `
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-red-600">Loading Error</h2>
+                        <p class="text-gray-600">Failed to load "${pageName}.html"</p>
+                        <p class="text-sm text-gray-500 mt-2">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Magnetic zoom effect for collapsed sidebar
+        function initMagneticEffect() {
+            const sidebar = document.getElementById('sidebar');
+            const menuButtons = document.querySelectorAll('.menu-btn');
+            
+            menuButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        // Add magnetic zoom effect with smooth animation
+                        this.style.transform = 'scale(1.2)';
+                        this.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+                        this.style.zIndex = '10';
+                        this.style.borderColor = '#3b82f6';
+                        
+                        // Enhanced glow effect
+                        this.style.background = 'linear-gradient(135deg, #dbeafe, #bfdbfe)';
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        // Reset magnetic zoom effect smoothly
+                        this.style.transform = 'scale(1)';
+                        this.style.boxShadow = 'none';
+                        this.style.zIndex = 'auto';
+                        this.style.borderColor = 'transparent';
+                        this.style.background = 'linear-gradient(135deg, #f3f4f6, #e5e7eb)';
+                    }
+                });
+                
+                // Add click effect for better feedback
+                btn.addEventListener('mousedown', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        this.style.transform = 'scale(0.95)';
+                        this.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.2)';
+                    }
+                });
+                
+                btn.addEventListener('mouseup', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        this.style.transform = 'scale(1.2)';
+                        this.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+                    }
+                });
+                
+                // Add touch support for mobile devices
+                btn.addEventListener('touchstart', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        this.style.transform = 'scale(0.95)';
+                    }
+                });
+                
+                btn.addEventListener('touchend', function(e) {
+                    if (!sidebar.classList.contains('expanded')) {
+                        this.style.transform = 'scale(1.2)';
+                    }
+                });
+            });
+        }
+        
+        // Header settings dropdown functionality
+        function initHeaderSettings() {
+            const headerSettingsBtn = document.getElementById('headerSettingsBtn');
+            const headerSettingsMenu = document.getElementById('headerSettingsMenu');
+            
+            if (headerSettingsBtn && headerSettingsMenu) {
+                headerSettingsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    headerSettingsMenu.classList.toggle('hidden');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!headerSettingsBtn.contains(e.target) && !headerSettingsMenu.contains(e.target)) {
+                        headerSettingsMenu.classList.add('hidden');
+                    }
+                });
+                
+                // Close dropdown when clicking on menu items
+                headerSettingsMenu.addEventListener('click', function() {
+                    headerSettingsMenu.classList.add('hidden');
+                });
+            }
+        }
+        
+        // Initialize magnetic effect when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 KeOS POS Dashboard v0.023 - Settings moved to top header menu');
+            loadPage('sales-summary');
+            initMagneticEffect();
+            initHeaderSettings();
+        });
+    </script>
+</body>
+</html>

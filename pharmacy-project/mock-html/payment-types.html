@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Types - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">Payment Types</h2>
+                <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    + ADD PAYMENT TYPE
+                </button>
+            </div>
+            
+            <!-- Payment types list -->
+            <div class="space-y-4">
+                <!-- Header -->
+                <div class="grid grid-cols-12 gap-4 text-sm font-medium text-gray-600 border-b border-gray-200 pb-2">
+                    <div class="col-span-1"></div>
+                    <div class="col-span-8">Name</div>
+                    <div class="col-span-3 text-right">Actions</div>
+                </div>
+
+                <!-- Cash payment type -->
+                <div class="grid grid-cols-12 gap-4 items-center py-3 border-b border-gray-100">
+                    <div class="col-span-1">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                    </div>
+                    <div class="col-span-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-grip-vertical text-gray-400 mr-3 cursor-move"></i>
+                            <span class="font-medium">Cash</span>
+                        </div>
+                    </div>
+                    <div class="col-span-3 text-right">
+                        <button class="p-2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-grip-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card payment type -->
+                <div class="grid grid-cols-12 gap-4 items-center py-3 border-b border-gray-100">
+                    <div class="col-span-1">
+                        <input type="checkbox" class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                    </div>
+                    <div class="col-span-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-grip-vertical text-gray-400 mr-3 cursor-move"></i>
+                            <span class="font-medium">Card</span>
+                        </div>
+                    </div>
+                    <div class="col-span-3 text-right">
+                        <button class="p-2 text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-grip-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk actions -->
+            <div class="mt-6 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <button class="px-4 py-2 text-sm border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors">
+                        Select All
+                    </button>
+                    <button class="px-4 py-2 text-sm border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors">
+                        Delete Selected
+                    </button>
+                </div>
+                <div class="text-sm text-gray-600">
+                    2 payment types
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add drag and drop functionality
+        let draggedElement = null;
+
+        document.querySelectorAll('.cursor-move').forEach(handle => {
+            handle.parentElement.parentElement.draggable = true;
+            
+            handle.parentElement.parentElement.addEventListener('dragstart', function(e) {
+                draggedElement = this;
+                this.style.opacity = '0.5';
+            });
+            
+            handle.parentElement.parentElement.addEventListener('dragend', function(e) {
+                this.style.opacity = '';
+                draggedElement = null;
+            });
+            
+            handle.parentElement.parentElement.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+            
+            handle.parentElement.parentElement.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (draggedElement !== this) {
+                    let allItems = Array.from(this.parentNode.children);
+                    let draggedIndex = allItems.indexOf(draggedElement);
+                    let targetIndex = allItems.indexOf(this);
+                    
+                    if (draggedIndex < targetIndex) {
+                        this.parentNode.insertBefore(draggedElement, this.nextSibling);
+                    } else {
+                        this.parentNode.insertBefore(draggedElement, this);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Devices - KeOS POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold">POS Devices</h2>
+                <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    + ADD POS
+                </button>
+            </div>
+            
+            <!-- POS devices table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Store
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Last Active
+                            </th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- POS 1 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                            <i class="fas fa-cash-register text-blue-600"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">POS 1</div>
+                                        <div class="text-sm text-gray-500">Main Counter</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                    Not activated
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                WTK - Main Store
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Never
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <button class="text-green-600 hover:text-green-900" title="Activate">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-900" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bulk actions -->
+            <div class="mt-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <button class="px-4 py-2 text-sm border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors">
+                        Select All
+                    </button>
+                    <button class="px-4 py-2 text-sm border border-gray-300 rounded text-gray-700 hover:bg-gray-50 transition-colors">
+                        Activate Selected
+                    </button>
+                    <button class="px-4 py-2 text-sm border border-red-300 rounded text-red-700 hover:bg-red-50 transition-colors">
+                        Delete Selected
+                    </button>
+                </div>
+                <div class="text-sm text-gray-600">
+                    1 device total
+                </div>
+            </div>
+
+            <!-- Device status overview -->
+            <div class="mt-8">
+                <h3 class="text-lg font-medium mb-4">Device Overview</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-cash-register text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-blue-600">Total Devices</div>
+                                <div class="text-2xl font-bold text-blue-900">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-green-600">Active</div>
+                                <div class="text-2xl font-bold text-green-900">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-red-600">Inactive</div>
+                                <div class="text-2xl font-bold text-red-900">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-yellow-600">Issues</div>
+                                <div class="text-2xl font-bold text-yellow-900">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device management features -->
+            <div class="mt-8">
+                <h3 class="text-lg font-medium mb-4">Device Management</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Remote access -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-remote text-blue-600 mr-3"></i>
+                            <h4 class="font-medium">Remote Management</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Remotely configure and troubleshoot POS devices from anywhere.
+                        </p>
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                            Access Remote
+                        </button>
+                    </div>
+
+                    <!-- Software updates -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-download text-green-600 mr-3"></i>
+                            <h4 class="font-medium">Software Updates</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Push software updates and configurations to all connected devices.
+                        </p>
+                        <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                            Check Updates
+                        </button>
+                    </div>
+
+                    <!-- Device monitoring -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-heartbeat text-purple-600 mr-3"></i>
+                            <h4 class="font-medium">Health Monitoring</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Monitor device health, performance, and connectivity status.
+                        </p>
+                        <button class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors">
+                            View Status
+                        </button>
+                    </div>
+
+                    <!-- Backup & sync -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-sync-alt text-orange-600 mr-3"></i>
+                            <h4 class="font-medium">Data Synchronization</h4>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Automatically sync sales data, inventory, and settings across all devices.
+                        </p>
+                        <button class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors">
+                            Sync Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Setup instructions -->
+            <div class="mt-8 bg-green-50 border border-green-200 rounded-lg p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-lightbulb text-green-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-green-800">
+                            POS Device Setup
+                        </h3>
+                        <div class="mt-2 text-sm text-green-700">
+                            <p>To set up a new POS device:</p>
+                            <ol class="list-decimal pl-5 mt-2 space-y-1">
+                                <li>Click "ADD POS" to register a new device</li>
+                                <li>Download and install the KeOS POS app on your device</li>
+                                <li>Enter the activation code provided during registration</li>
+                                <li>Configure device-specific settings (printer, cash drawer, etc.)</li>
+                                <li>Test all functions before going live</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Select all functionality
+        const selectAllCheckbox = document.querySelector('thead input[type="checkbox"]');
+        const rowCheckboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        selectAllCheckbox.addEventListener('change', function() {
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // Individual checkbox changes
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const checkedCount = Array.from(rowCheckboxes).filter(cb => cb.checked).length;
+                selectAllCheckbox.checked = checkedCount === rowCheckboxes.length;
+                selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < rowCheckboxes.length;
+            });
+        });
+
+        // POS management functions
+        function activatePOS(posId) {
+            console.log('Activate POS:', posId);
+            // Would activate the POS device
+        }
+
+        function editPOS(posId) {
+            console.log('Edit POS:', posId);
+            // Would open POS edit form
+        }
+
+        function deletePOS(posId) {
+            if (confirm('Are you sure you want to delete this POS device?')) {
+                console.log('Delete POS:', posId);
+                // Would delete the POS device
+            }
+        }
+
+        // Add event listeners
+        document.querySelectorAll('.fa-play').forEach(button => {
+            button.addEventListener('click', () => activatePOS('pos1'));
+        });
+
+        document.querySelectorAll('.fa-edit').forEach(button => {
+            button.addEventListener('click', () => editPOS('pos1'));
+        });
+
+        document.querySelectorAll('.fa-trash').forEach(button => {
+            button.addEventListener('click', () => deletePOS('pos1'));
+        });
+    </script>
+</body>
+</html>
