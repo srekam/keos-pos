@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock POS - Navigation</title>
+    <link rel="stylesheet" href="./dist/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen font-pos">
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Mock POS System</h1>
+                <p class="text-xl text-gray-600">Modern Point of Sale Interface</p>
+                <p class="text-gray-500 mt-2">Built with Tailwind CSS • Professional Design • Touch-Optimized</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Login / Shift Open -->
+                <a href="index.html" class="pos-card hover:shadow-lg transition-shadow duration-200 block">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🔐</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Login / Shift Open</h2>
+                        <p class="text-gray-600 mb-4">Cashier authentication and shift initialization with opening cash balance</p>
+                        <span class="btn-primary inline-block">Start Here</span>
+                    </div>
+                </a>
+
+                <!-- Main POS Screen -->
+                <a href="pos-main.html" class="pos-card hover:shadow-lg transition-shadow duration-200 block">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🛒</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Main POS Screen</h2>
+                        <p class="text-gray-600 mb-4">Product search, shopping cart, and checkout interface</p>
+                        <span class="btn-primary inline-block">Shop Now</span>
+                    </div>
+                </a>
+
+                <!-- Checkout / Payment -->
+                <a href="checkout.html" class="pos-card hover:shadow-lg transition-shadow duration-200 block">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">💳</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Checkout / Payment</h2>
+                        <p class="text-gray-600 mb-4">Payment processing with cash, card, and QR options</p>
+                        <span class="btn-primary inline-block">Process Payment</span>
+                    </div>
+                </a>
+
+                <!-- Refund Screen -->
+                <a href="refund.html" class="pos-card hover:shadow-lg transition-shadow duration-200 block">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🔄</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Refund Management</h2>
+                        <p class="text-gray-600 mb-4">Receipt lookup and item-specific refund processing</p>
+                        <span class="btn-secondary inline-block">Process Refund</span>
+                    </div>
+                </a>
+
+                <!-- Shift Close -->
+                <a href="shift-close.html" class="pos-card hover:shadow-lg transition-shadow duration-200 block">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Shift Close</h2>
+                        <p class="text-gray-600 mb-4">Cash reconciliation and sales summary reporting</p>
+                        <span class="btn-secondary inline-block">Close Shift</span>
+                    </div>
+                </a>
+
+                <!-- Documentation -->
+                <div class="pos-card">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">📚</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Documentation</h2>
+                        <p class="text-gray-600 mb-4">Design requirements and technical documentation</p>
+                        <div class="space-y-2">
+                            <a href="pos.md" class="btn-secondary block">Design Requirements</a>
+                            <a href="README.md" class="btn-secondary block">Technical Docs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="mt-12 pos-card">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Key Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <h3 class="font-semibold text-gray-900">Smart Search</h3>
+                        <p class="text-sm text-gray-600">Barcode scanning, text search, and category filtering</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">📱</div>
+                        <h3 class="font-semibold text-gray-900">Touch Optimized</h3>
+                        <p class="text-sm text-gray-600">Large buttons and responsive design for tablets</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">💰</div>
+                        <h3 class="font-semibold text-gray-900">Multi-Payment</h3>
+                        <p class="text-sm text-gray-600">Cash, card, and QR payment support with change calculation</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">📄</div>
+                        <h3 class="font-semibold text-gray-900">Receipt System</h3>
+                        <p class="text-sm text-gray-600">Print and email receipts with transaction tracking</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Development Info -->
+            <div class="mt-8 text-center text-gray-500">
+                <p class="mb-2">Built with Tailwind CSS • Vanilla JavaScript • Modern Web Standards</p>
+                <p class="text-sm">Use <code class="bg-gray-200 px-2 py-1 rounded">npm run dev</code> for development • <code class="bg-gray-200 px-2 py-1 rounded">npm run build</code> for production</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

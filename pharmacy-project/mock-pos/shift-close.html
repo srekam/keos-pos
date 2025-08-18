@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock POS - Close Shift</title>
+    <link rel="stylesheet" href="./dist/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-pos min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-bold text-gray-900">Mock POS - Close Shift</h1>
+            </div>
+            <button onclick="goBack()" class="btn-secondary">Back to POS</button>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Cash Count -->
+                <div class="pos-card">
+                    <h2 class="text-xl font-semibold mb-4">Cash Count</h2>
+                    
+                    <div class="mb-6">
+                        <label for="countedCash" class="block text-sm font-medium text-gray-700 mb-2">Counted Cash Balance</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg">$</span>
+                            <input type="number" id="countedCash" class="pos-input pl-8" placeholder="0.00" step="0.01" min="0" onkeyup="calculateVariance()">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Opening Balance:</span>
+                            <span id="openingBalance" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Expected Cash:</span>
+                            <span id="expectedCash" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-200 pt-2">
+                            <span class="text-gray-600">Variance:</span>
+                            <span id="cashVariance" class="font-bold">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Summary -->
+                <div class="pos-card">
+                    <h2 class="text-xl font-semibold mb-4">Sales Summary</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Shift Start:</span>
+                            <span id="shiftStart" class="font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Total Transactions:</span>
+                            <span id="totalTransactions" class="font-medium">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Total Sales:</span>
+                            <span id="totalSales" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Cash Sales:</span>
+                            <span id="cashSales" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Card Sales:</span>
+                            <span id="cardSales" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">QR Sales:</span>
+                            <span id="qrSales" class="font-medium">$0.00</span>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-200 pt-2">
+                            <span class="text-gray-600">Tax Collected:</span>
+                            <span id="taxCollected" class="font-medium">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="pos-card lg:col-span-2">
+                    <h2 class="text-xl font-semibold mb-4">Transaction History</h2>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-2">Receipt #</th>
+                                    <th class="text-left py-2">Time</th>
+                                    <th class="text-left py-2">Items</th>
+                                    <th class="text-left py-2">Payment Method</th>
+                                    <th class="text-right py-2">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionHistory">
+                                <tr>
+                                    <td colspan="5" class="text-center py-8 text-gray-500">No transactions recorded</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Close Shift Actions -->
+                <div class="pos-card lg:col-span-2">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold">Ready to close shift?</h3>
+                            <p class="text-gray-600">Please review all information before closing.</p>
+                        </div>
+                        <div class="space-x-4">
+                            <button onclick="printShiftReport()" class="btn-secondary">Print Report</button>
+                            <button onclick="closeShift()" class="btn-danger">Close Shift</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="shift-close.js"></script>
+</body>
+</html>

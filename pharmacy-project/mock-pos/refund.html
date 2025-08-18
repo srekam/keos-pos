@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock POS - Refund</title>
+    <link rel="stylesheet" href="./dist/output.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-pos">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-bold text-gray-900">Mock POS - Refund</h1>
+            </div>
+            <button onclick="goBack()" class="btn-secondary">Back to POS</button>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Receipt Lookup -->
+            <div class="pos-card mb-8">
+                <h2 class="text-xl font-semibold mb-4">Find Receipt</h2>
+                
+                <div class="flex space-x-4 mb-4">
+                    <div class="flex-1">
+                        <input type="text" id="receiptNumber" class="pos-input" placeholder="Enter receipt number (e.g., R12345678)" onkeyup="handleReceiptInput()">
+                    </div>
+                    <button onclick="searchReceipt()" class="btn-primary">Search</button>
+                    <button onclick="scanReceipt()" class="btn-secondary">Scan</button>
+                </div>
+                
+                <div id="receiptStatus" class="text-sm text-gray-500">
+                    Enter receipt number to search for transaction
+                </div>
+            </div>
+
+            <!-- Receipt Details -->
+            <div id="receiptDetails" class="hidden">
+                <div class="pos-card mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Receipt Details</h2>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <p><span class="text-gray-600">Receipt #:</span> <span id="foundReceiptNumber" class="font-medium"></span></p>
+                            <p><span class="text-gray-600">Date:</span> <span id="receiptDate" class="font-medium"></span></p>
+                            <p><span class="text-gray-600">Cashier:</span> <span id="receiptCashier" class="font-medium"></span></p>
+                        </div>
+                        <div>
+                            <p><span class="text-gray-600">Payment Method:</span> <span id="receiptPaymentMethod" class="font-medium"></span></p>
+                            <p><span class="text-gray-600">Total:</span> <span id="receiptTotal" class="font-medium"></span></p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-semibold mb-3">Items</h3>
+                    <div id="receiptItems" class="space-y-2">
+                        <!-- Items will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Refund Selection -->
+                <div class="pos-card mb-8">
+                    <h2 class="text-xl font-semibold mb-4">Select Items to Refund</h2>
+                    
+                    <div id="refundItems" class="space-y-3 mb-6">
+                        <!-- Refund items will be loaded here -->
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4">
+                        <div class="flex justify-between text-xl font-bold">
+                            <span>Refund Total:</span>
+                            <span id="refundTotal">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refund Actions -->
+                <div class="pos-card">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold">Process Refund</h3>
+                            <p class="text-gray-600">Refund will be processed to original payment method</p>
+                        </div>
+                        <div class="space-x-4">
+                            <button onclick="cancelRefund()" class="btn-secondary">Cancel</button>
+                            <button onclick="processRefund()" class="btn-danger" id="processRefundBtn" disabled>Process Refund</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="refund.js"></script>
+</body>
+</html>

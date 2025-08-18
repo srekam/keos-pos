@@ -66,8 +66,16 @@ deploy_services() {
     print_status "Building Node.js API image..."
     docker-compose build --no-cache api
     
+    # Build the React Frontend image
+    print_status "Building React Frontend image..."
+    docker-compose build --no-cache frontend
+    
+    # Build the React Backend image
+    print_status "Building React Backend image..."
+    docker-compose build --no-cache react-backend
+    
     # Start all services
-    print_status "Starting all services (PostgreSQL, pgAdmin, API, Nginx)..."
+    print_status "Starting all services (PostgreSQL, pgAdmin, API, React Frontend, React Backend, Nginx)..."
     docker-compose up -d
     
     print_success "Services started successfully"
@@ -111,6 +119,40 @@ wait_for_services() {
         exit 1
     fi
     
+    # Wait for React Frontend
+    print_status "Waiting for React Frontend..."
+    timeout=60
+    while [ $timeout -gt 0 ]; do
+        if curl -f http://localhost:40001/health > /dev/null 2>&1; then
+            print_success "React Frontend is ready"
+            break
+        fi
+        sleep 2
+        timeout=$((timeout - 2))
+    done
+    
+    if [ $timeout -le 0 ]; then
+        print_error "React Frontend failed to start within 60 seconds"
+        exit 1
+    fi
+    
+    # Wait for React Backend
+    print_status "Waiting for React Backend..."
+    timeout=60
+    while [ $timeout -gt 0 ]; do
+        if curl -f http://localhost:40002/health > /dev/null 2>&1; then
+            print_success "React Backend is ready"
+            break
+        fi
+        sleep 2
+        timeout=$((timeout - 2))
+    done
+    
+    if [ $timeout -le 0 ]; then
+        print_error "React Backend failed to start within 60 seconds"
+        exit 1
+    fi
+    
     # Wait for Nginx
     print_status "Waiting for Nginx web server..."
     timeout=60
@@ -146,6 +188,24 @@ check_health() {
         exit 1
     fi
     
+    # Check React Frontend health
+    print_status "React Frontend health check..."
+    if curl -f http://localhost:40001/health > /dev/null 2>&1; then
+        print_success "React Frontend health check passed"
+    else
+        print_error "React Frontend health check failed"
+        exit 1
+    fi
+    
+    # Check React Backend health
+    print_status "React Backend health check..."
+    if curl -f http://localhost:40002/health > /dev/null 2>&1; then
+        print_success "React Backend health check passed"
+    else
+        print_error "React Backend health check failed"
+        exit 1
+    fi
+    
     # Check Nginx health
     print_status "Nginx health check..."
     if curl -f http://localhost:40080/health > /dev/null 2>&1; then
@@ -172,6 +232,8 @@ show_urls() {
     echo ""
     echo "📊 Service URLs:"
     echo "   🌐 Web Dashboard: http://localhost:40080"
+    echo "   ⚛️ React Frontend: http://localhost:40001"
+    echo "   ⚛️ React Backend: http://localhost:40002"
     echo "   🔍 API Health Check: http://localhost:41300/health"
     echo "   💊 Products: http://localhost:41300/api/products"
     echo "   👥 Customers: http://localhost:41300/api/customers"
@@ -186,8 +248,12 @@ show_urls() {
     echo "   View logs: docker-compose logs -f"
     echo "   Stop services: docker-compose down"
     echo "   Restart API: docker-compose restart api"
+    echo "   Restart React Frontend: docker-compose restart frontend"
+    echo "   Restart React Backend: docker-compose restart react-backend"
     echo "   Restart Nginx: docker-compose restart nginx"
     echo "   Rebuild API: docker-compose up -d --build api"
+    echo "   Rebuild React Frontend: docker-compose up -d --build frontend"
+    echo "   Rebuild React Backend: docker-compose up -d --build react-backend"
     echo "   Rebuild Nginx: docker-compose up -d --build nginx"
 }
 

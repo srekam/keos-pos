@@ -1,89 +1,165 @@
+# Optimized Docker Compose for Pharmacy POS
+# Enable BuildKit for faster builds
 version: '3.8'
 
+# Global environment variables for BuildKit
+x-build-args: &build-args
+  BUILDKIT_INLINE_CACHE: 1
+  DOCKER_BUILDKIT: 1
+
 services:
+  # PostgreSQL Database
   postgres:
     image: postgres:15
-    container_name: pharmacy_pos_db
-    restart: unless-stopped
+    container_name: pharmacy_postgres
     environment:
       POSTGRES_DB: pharmacy_pos
       POSTGRES_USER: pharmacy_user
       POSTGRES_PASSWORD: pharmacy_password_2024
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
-    # No port forwarding - internal access only via pgAdmin or API
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/init:/docker-entrypoint-initdb.d
-      - ./database/backups:/backups
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
     networks:
       - pharmacy_network
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U pharmacy_user -d pharmacy_pos"]
       interval: 30s
       timeout: 10s
       retries: 3
 
+  # Node.js API Backend
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pharmacy_api
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pharmacy_pos
+      DB_USER: pharmacy_user
+      DB_PASSWORD: pharmacy_password_2024
+      JWT_SECRET: your_jwt_secret_key_here_change_in_production
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - pharmacy_network
+    restart: unless-stopped
+
+  # React Frontend (Main)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - PORT=40001
+    container_name: pharmacy_frontend
+    ports:
+      - "40001:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - pharmacy_network
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+
+  # React Backend (Alternative Frontend)
+  react-backend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.backend
+      args:
+        - PORT=40002
+    container_name: pharmacy_react_backend
+    ports:
+      - "40002:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - pharmacy_network
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+
+  # Nginx Reverse Proxy
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: pharmacy_nginx
+  #   ports:
+  #     - "40080:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./assets:/usr/share/nginx/html:ro
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+  #     frontend:
+  #       condition: service_started
+  #     react-backend:
+  #       condition: service_started
+  #   networks:
+  #     - pharmacy_network
+  #   restart: unless-stopped
+
+  # pgAdmin for Database Management
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: pharmacy_pos_pgadmin
-    restart: unless-stopped
+    container_name: pharmacy_pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@pharmacypos.com
       PGADMIN_DEFAULT_PASSWORD: admin_password_2024
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "48080:80"  # New port: 48080
     volumes:
       - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - pharmacy_network
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  api:
-    build: .
-    container_name: pharmacy_pos_api
-    restart: unless-stopped
     ports:
-      - "41300:3000"  # New port: 41300 for Node.js API
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=pharmacy_pos
-      - DB_USER=pharmacy_user
-      - DB_PASSWORD=pharmacy_password_2024
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    networks:
-      - pharmacy_network
+      - "48080:80"
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - pharmacy_network
+    restart: unless-stopped
 
-  nginx:
+  # HTML Mock Data Display (Nginx)
+  mock-html:
     image: nginx:alpine
-    container_name: pharmacy_pos_nginx
-    restart: unless-stopped
+    container_name: pharmacy_mock_html
     ports:
-      - "40080:80"  # New port: 40080 for web HTML
+      - "40005:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./assets/login.html:/usr/share/nginx/html/login.html:ro
-      - ./assets/dashboard.html:/usr/share/nginx/html/dashboard.html:ro
-      - ./assets:/usr/share/nginx/html/assets:ro
+      - ./mock-html:/usr/share/nginx/html:ro
+      - ./mock-html/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
     networks:
       - pharmacy_network
-    depends_on:
-      - api
+    restart: unless-stopped
 
 volumes:
   postgres_data:
-    driver: local
   pgadmin_data:
-    driver: local
 
 networks:
   pharmacy_network:

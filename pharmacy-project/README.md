@@ -1,526 +1,494 @@
-# Thai Pharmacy POS System
+# 🏥 Pharmacy Management System
 
-A modern, cloud-based Point of Sale system specifically designed for Thai pharmacies, built with Node.js backend and React Native mobile app.
+A comprehensive pharmacy management solution built with modern web technologies, featuring a React frontend and Node.js backend, all containerized with Docker for easy deployment and management.
 
-## 📊 Current Project Status
+## 🟢 **Current Status: All Systems Operational**
 
-**Last Updated**: August 2024  
-**Development Phase**: Phase 1 - Database & Infrastructure  
-**Current Status**: ✅ Database Complete, ✅ API Code Ready, 🚨 **DEPLOYMENT PENDING**
+- ✅ **Backend API**: Running on port 3000 (Healthy)
+- ✅ **PostgreSQL Database**: Running on port 5432 (Healthy)  
+- ✅ **React Frontend**: Running on port 40001 (Healthy)
+- ✅ **React Backend**: Running on port 40002 (Healthy)
+- ✅ **pgAdmin**: Running on port 48080
+- ✅ **Mock HTML Interface**: Running on port 40005 (Healthy)
+- 🔧 **Nginx**: Disabled (can be enabled via docker-compose.yml)
 
-### 🎯 **IMMEDIATE NEXT ACTION REQUIRED**
-**Deploy the Node.js API to the remote Docker server (10.5.50.48)**
+## 🏗️ **Project Architecture**
 
-### ✅ What's Completed
-- **Database Schema**: Complete pharmacy POS database with 20+ tables
-- **Docker Setup**: PostgreSQL + pgAdmin running locally
-- **Sample Data**: 19 products, 8 customers, 5 prescriptions, 8 sales
-- **Pharmacy Features**: Drug interactions, expiry tracking, prescriptions
-- **Thai Market**: Local language support, PromptPay, VAT compliance
+This project is organized into two main directories for better separation of concerns and easier management:
 
-### 🚧 What's Next
-- **Backend API**: Node.js Express server with authentication
-- **Mobile App**: React Native app for tablets and phones
-- **User Interface**: Login, dashboard, sales, inventory screens
-- **Testing**: Database connection, API endpoints, mobile app
+```
+pharmacy-project/
+├── 📁 backend/              # Backend API and services
+│   ├── 📁 controllers/      # API route controllers
+│   ├── 📁 database/         # Database scripts and schemas
+│   ├── 📁 middleware/       # Express middleware
+│   ├── 📁 routes/           # API route definitions
+│   ├── 📄 server.js         # Main Express server
+│   ├── 📄 package.json      # Backend dependencies
+│   ├── 📄 Dockerfile        # Backend container config
+│   └── 📄 README.md         # Backend documentation
+├── 📁 frontend/             # React frontend applications
+│   ├── 📁 src/              # React source code
+│   ├── 📁 components/       # UI components
+│   ├── 📁 pages/            # Page components
+│   ├── 📄 package.json      # Frontend dependencies
+│   ├── 📄 Dockerfile        # Frontend container config
+│   └── 📄 README.md         # Frontend documentation
+├── 📁 assets/                # Static assets and HTML templates
+├── 📁 mock-pos/              # Modern POS frontend interface
+│   ├── 📄 index.html         # Login/Shift Open screen
+│   ├── 📄 pos-main.html      # Main POS interface
+│   ├── 📄 checkout.html      # Payment processing
+│   ├── 📄 refund.html        # Refund management
+│   ├── 📄 shift-close.html   # Shift closing
+│   ├── 📄 *.js               # JavaScript functionality
+│   ├── 📁 src/               # Tailwind CSS source
+│   ├── 📁 dist/              # Compiled CSS output
+│   ├── 📄 tailwind.config.js # Tailwind CSS configuration
+│   ├── 📄 package.json       # Dependencies
+│   └── 📄 pos.md             # POS design requirements
+├── 📄 docker-compose.yml     # Multi-service orchestration
+├── 📄 deploy-nginx.sh        # Main deployment script
+├── 📄 deploy-react-backend.sh # React backend deployment
+└── 📄 README.md              # This file
+```
 
-## 🏥 Features
+## 🚀 **Quick Start**
 
-### Core POS Functions
-- **User Management** - Staff login, role-based access
-- **Product Management** - Drug inventory, categories, pricing
-- **Sales Processing** - Prescription and OTC sales
-- **Customer Management** - Patient records and history
-- **Inventory Tracking** - Stock levels, expiry dates, reorder alerts
+### **Prerequisites**
+- Docker and Docker Compose
+- PostgreSQL database
+- Node.js (for development)
 
-### Pharmacy-Specific Features
-- **Prescription Management** - Doctor orders, dosage tracking, refills
-- **Drug Information** - Active ingredients, interactions, storage conditions
-- **Patient Records** - Medical history, allergies, current medications
-- **Expiry Tracking** - Batch management, expiration alerts
-- **Thai Market Support** - Local language, PromptPay, VAT compliance
-
-## 🚀 Technology Stack
-
-### Backend
-- **Node.js** - Server runtime
-- **Express.js** - Web framework
-- **PostgreSQL** - Primary database
-- **JWT** - Authentication
-- **Prisma** - Database ORM
-
-### Mobile App
-- **React Native** - Cross-platform mobile development
-- **Redux Toolkit** - State management
-- **SQLite** - Local offline storage
-- **Native Base** - UI components
-
-### Infrastructure
-- **Cloud Hosting** - AWS/Google Cloud
-- **Database** - Managed PostgreSQL
-- **File Storage** - S3-compatible storage
-- **CDN** - Content delivery network
-
-## 📱 Screenshots
-
-### Login Screen
-- Clean, professional interface
-- Role-based authentication
-- Secure login system
-
-### Main Dashboard
-- Daily sales overview
-- Quick access to key functions
-- Real-time inventory status
-
-### Sales Interface
-- Product search and selection
-- Prescription processing
-- Multiple payment methods
-
-## 🗄️ Database Schema
-
-### Core Tables
-- `users` - Staff and pharmacists
-- `products` - Drugs and medications
-- `categories` - Product classifications
-- `inventory` - Stock management
-- `customers` - Patient information
-- `sales` - Transaction records
-- `sale_items` - Individual sale items
-
-### Pharmacy Tables
-- `drug_details` - Medication information
-- `prescriptions` - Doctor orders
-- `prescription_items` - Prescription details
-- `drug_expiry_tracking` - Expiration management
-
-## 🛠️ Installation
-
-### Prerequisites
-- **Remote Docker Server**: Access to Docker server at `10.5.50.48`
-- Node.js 18+ (for API development)
-- React Native development environment
-
-### Remote Development Setup
-This project is configured for **remote development** where:
-- **Your Development Machine**: `10.5.50.19` (Cursor app)
-- **Docker Server**: `10.5.50.48` (Remote PostgreSQL + pgAdmin)
-- **API Server**: Runs on your local machine, connects to remote database
-
-**Configuration Files Updated**:
-- `config.js`: Database host set to `10.5.50.48`
-- `server.js`: API endpoints show correct local IP
-- `docker-compose.yml`: Runs on remote server
-
-### Current Docker Setup
-The project is configured with Docker containers running on a **remote server**:
-
-- **Remote Docker Server**: `10.5.50.48` (NOT localhost)
-- **PostgreSQL Database**: Internal only (no port forwarding)
-- **pgAdmin**: Web interface on port 48080
-- **Node.js API**: Running on port 41300
-- **Nginx Web**: Login page, Dashboard & API proxy on port 40080
-- **Database**: `pharmacy_pos` with complete schema and sample data
-- **Credentials**: See Docker section below
-
-**⚠️ IMPORTANT**: This project uses a remote Docker server, not localhost!
-**🚀 API**: The Node.js API runs in Docker on the remote server - no local resources needed!
-
-### Docker Setup (Recommended for Development)
+### **1. Clone and Setup**
 ```bash
-# Start all services (Database, pgAdmin, and API)
+git clone <repository-url>
+cd pharmacy-project
+```
+
+### **2. Start All Services**
+```bash
+# Start all services with Docker Compose
+./deploy-nginx.sh
+
+# Or start individual services
 docker-compose up -d
+```
 
-# Check container status
+### **3. Access Applications**
+- **Main Frontend**: http://localhost:40001
+- **React Backend**: http://localhost:40002
+- **Mock UI Interface**: http://localhost:40005/mock-ui.html ⭐ **(New!)**
+- **Backend Viewer**: http://localhost:40005/index.html
+- **Modern POS Interface**: file:///mock-pos/index.html ⭐ **(New!)**
+- **Backend API**: http://localhost:3000 (internal)
+- **Database**: PostgreSQL on port 5432
+
+## 🎯 **Key Features**
+
+### **🏥 Pharmacy Management**
+- **Product Catalog**: Complete inventory management
+- **Sales Processing**: Point of sale with cart functionality
+- **Employee Management**: Role-based access control
+- **Customer Records**: Patient and customer management
+- **Inventory Tracking**: Stock management and alerts
+- **Reporting**: Comprehensive analytics and reports
+
+### **💳 Modern POS Interface (New!)**
+- **Clean UI Design**: Modern Tailwind CSS-based interface
+- **Login/Shift Management**: Secure cashier authentication and shift tracking
+- **Product Search**: Barcode scanning, text search, and category filtering
+- **Shopping Cart**: Interactive cart with quantity controls and real-time totals
+- **Payment Processing**: Support for Cash, Card, and QR payment methods
+- **Receipt Management**: Print and email receipt options
+- **Refund System**: Easy receipt lookup and item-specific refunds
+- **Shift Reporting**: Cash reconciliation and sales summaries
+
+### **👥 User Management**
+- **Role-Based Access**: Owner, Pharmacist, Administrator roles
+- **Authentication**: Secure JWT-based login system
+- **Permissions**: Granular access control
+- **User Profiles**: Account management and settings
+
+### **📊 Business Intelligence**
+- **Sales Analytics**: Performance overview and trends
+- **Inventory Reports**: Stock levels and movements
+- **Employee Performance**: Work timing and productivity
+- **Financial Reports**: Revenue and payment analysis
+
+## 🏗️ **Service Architecture**
+
+### **Backend Services**
+- **Node.js API Server**: Express.js REST API
+- **PostgreSQL Database**: Reliable data storage
+- **Authentication Middleware**: JWT token management
+- **API Routes**: RESTful endpoints for all operations
+
+### **Frontend Services**
+- **React Frontend (Port 40001)**: Main pharmacy interface
+- **React Backend (Port 40002)**: Alternative frontend instance
+- **Mock HTML Interface (Port 40005)**: Backend data visualization and API testing
+- **Modern POS Interface**: Standalone Tailwind CSS-based POS system
+- **Nginx Reverse Proxy**: Load balancing and SSL termination
+- **Responsive Design**: Mobile-first approach
+
+### **Infrastructure**
+- **Docker Containers**: Isolated service environments
+- **Nginx Configuration**: Reverse proxy and static file serving
+- **Health Checks**: Service monitoring and auto-restart
+- **Volume Mounting**: Persistent data storage
+
+### **Mock HTML Interface (Port 40005)**
+- **Purpose**: Comprehensive HTML interface suite for backend visualization and API testing
+- **Main Interfaces**:
+  - **Backend Viewer** (`/index.html`) - Real-time backend data and API testing
+  - **Mock UI Interface** (`/mock-ui.html`) - Complete system architecture visualization
+  - **Login Testing** (`/login.html`) - Authentication endpoint testing
+- **Key Features**: 
+  - 🏗️ **Complete System Architecture Visualization** - Interactive service diagram
+  - 🗄️ **Database Schema Explorer** - Expandable table structures with field details
+  - 🔗 **Interactive API Endpoint Testing** - Click-to-test with live responses
+  - 📊 **Real-time System Health Monitoring** - All services status dashboard
+  - 🎯 **Port Mapping Visualization** - Clear service-to-port relationships
+  - 💼 **Feature Overview Dashboard** - Business capabilities showcase
+  - 🔄 **Live Status Updates** - Automatic health checks and refresh
+  - 📱 **Responsive Design** - Works on all devices
+- **Technical Design**: Pure HTML/CSS/JavaScript (no dependencies)
+- **API Proxy**: Seamless backend integration via Nginx routing
+
+### **Modern POS Interface**
+- **Purpose**: Professional point-of-sale system for retail/restaurant environments
+- **Main Screens**:
+  - **Login/Shift Open** (`/index.html`) - Cashier authentication and shift initialization
+  - **Main POS Screen** (`/pos-main.html`) - Product search, cart management, and checkout
+  - **Payment Processing** (`/checkout.html`) - Multiple payment methods and receipt options
+  - **Refund Management** (`/refund.html`) - Receipt lookup and item-specific refunds
+  - **Shift Close** (`/shift-close.html`) - Cash reconciliation and sales reporting
+- **Key Features**: 
+  - 🛒 **Interactive Shopping Cart** - Real-time item management with quantity controls
+  - 🔍 **Advanced Product Search** - Barcode scanning, text search, category filtering
+  - 💳 **Multi-Payment Support** - Cash (with change calculation), Card, QR payments
+  - 📄 **Receipt System** - Print/email options with transaction tracking
+  - 🔄 **Refund Processing** - Easy receipt lookup and selective item refunds
+  - 📊 **Shift Management** - Opening/closing cash, sales summaries, variance tracking
+  - 📱 **Responsive Design** - Optimized for tablets and desktop POS terminals
+  - 🎨 **Professional UI** - Large buttons, clear typography, modern Tailwind CSS styling
+- **Technical Stack**: HTML5, Tailwind CSS, Vanilla JavaScript (no framework dependencies)
+- **Development**: Built with Tailwind CSS build system and npm scripts
+
+## 🔧 **Technology Stack**
+
+### **Backend**
+- **Runtime**: Node.js with Express.js
+- **Database**: PostgreSQL with pg library
+- **Authentication**: JWT tokens with bcrypt
+- **Validation**: Input sanitization and validation
+- **CORS**: Cross-origin resource sharing
+
+### **Frontend**
+- **Framework**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom components
+- **Routing**: React Router DOM
+- **State Management**: React Context API
+- **UI Components**: shadcn/ui component library
+- **Icons**: Lucide React icon set
+
+### **DevOps**
+- **Containerization**: Docker with multi-stage builds
+- **Orchestration**: Docker Compose
+- **Web Server**: Nginx with reverse proxy
+- **Deployment**: Automated shell scripts
+- **Monitoring**: Health check endpoints
+
+## 📱 **User Interface**
+
+### **Design System**
+- **Modern UI**: Clean, professional pharmacy interface
+- **Glass Morphism**: Contemporary visual effects
+- **Responsive Layout**: Works on all device sizes
+- **Accessibility**: WCAG compliant components
+- **Color Scheme**: Healthcare-appropriate palette
+
+### **Navigation**
+- **Collapsible Sidebar**: macOS-style magnetic menu
+- **Breadcrumb Navigation**: Clear navigation path
+- **Quick Actions**: Dashboard shortcuts
+- **Mobile Optimized**: Touch-friendly interface
+
+### **Key Pages**
+- **Dashboard**: Overview with metrics and quick actions
+- **Login**: Secure authentication with glass morphism
+- **Settings**: Comprehensive system configuration
+- **Employees**: Staff management with role system
+- **Products**: Inventory and catalog management
+- **Inventory**: Stock and supply chain management
+- **Reports**: Analytics and business intelligence
+- **Owner/Account**: Profile and account management
+
+## 🐳 **Docker Services**
+
+### **Service Configuration**
+```yaml
+services:
+  api:                    # Node.js backend API
+    ports: ["3000:3000"]
+    
+  frontend:              # React main frontend
+    ports: ["40001:80"]
+    
+  react-backend:         # React alternative frontend
+    ports: ["40002:80"]
+    
+  postgres:              # PostgreSQL database
+    ports: ["5432:5432"]
+    
+  mock-html:             # HTML mock data interface
+    ports: ["40005:80"]
+    
+  nginx:                 # Reverse proxy and load balancer
+    ports: ["80:80", "443:443"]
+```
+
+### **Deployment Options**
+- **Full Stack**: All services with `./deploy-nginx.sh`
+- **Frontend Only**: React apps with `./deploy-react-backend.sh`
+- **Individual Services**: `docker-compose up [service-name]`
+- **Development Mode**: Local development setup
+
+## 📊 **Database Schema**
+
+### **Core Tables**
+- **users**: Authentication and user profiles
+- **products**: Product catalog and inventory
+- **sales**: Transaction records and history
+- **employees**: Staff management and roles
+- **categories**: Product classification
+- **suppliers**: Vendor information
+- **customers**: Patient and customer records
+
+### **Relationships**
+- **One-to-Many**: Users to Sales, Products to Sales
+- **Many-to-Many**: Products to Categories
+- **Hierarchical**: Employee roles and permissions
+
+## 🔒 **Security Features**
+
+### **Authentication & Authorization**
+- **JWT Tokens**: Secure session management
+- **Password Hashing**: bcrypt with salt rounds
+- **Role-Based Access**: Granular permission system
+- **Session Management**: Secure token storage
+
+### **Data Protection**
+- **Input Validation**: SQL injection prevention
+- **CORS Configuration**: Controlled cross-origin access
+- **Environment Variables**: Secure configuration management
+- **HTTPS Ready**: SSL/TLS configuration support
+
+## 🚀 **Deployment**
+
+### **Production Deployment**
+```bash
+# 1. Set environment variables
+cp backend/env.production backend/.env
+# Edit .env with your production values
+
+# 2. Deploy all services
+./deploy-nginx.sh
+
+# 3. Verify deployment
 docker-compose ps
-
-# View logs for all services
-docker-compose logs -f
-
-# View logs for specific service
-docker-compose logs -f api
-docker-compose logs -f postgres
-docker-compose logs -f pgadmin
-
-# Stop all services
-docker-compose down
-
-# Rebuild and restart API only (after code changes)
-docker-compose up -d --build api
+curl http://localhost/health
 ```
 
-### Database Access
-- **PostgreSQL**: Internal access only (no external port)
-- **Database**: pharmacy_pos
-- **Username**: pharmacy_user
-- **Password**: pharmacy_password_2024
-- **pgAdmin**: http://10.5.50.48:48080 (admin@pharmacypos.com / admin_password_2024)
-
-**⚠️ REMOTE ACCESS**: All Docker services run on remote server `10.5.50.48`
-
-### Backend Setup (Docker-based - No Local Resources Needed!)
-
-**🚀 The API runs in Docker on the remote server!**
-
+### **Development Setup**
 ```bash
-# No local setup needed - everything runs on remote Docker server
-# The API automatically connects to the PostgreSQL database
-
-# To deploy API changes:
-# 1. Update your code
-# 2. Rebuild and restart the API container:
-docker-compose up -d --build api
-
-# To check API status:
-curl http://10.5.50.48:3000/health
-
-# To view API logs:
-docker-compose logs -f api
-```
-
-**✅ Benefits of Docker-based API:**
-- **Zero local resources** - API runs on remote server
-- **Automatic scaling** - Easy to scale up/down
-- **Consistent environment** - Same setup everywhere
-- **Easy deployment** - Just rebuild container
-- **Health monitoring** - Built-in health checks
-
-### Mobile App Setup
-```bash
-cd mobile-app
+# Backend development
+cd backend
 npm install
-npx react-native run-android
-# or
-npx react-native run-ios
+npm start
+
+# Frontend development
+cd frontend
+npm install
+npm start
 ```
 
-## 📊 API Endpoints
+### **Environment Configuration**
+- **Development**: Local development with hot reload
+- **Production**: Optimized builds with Docker
+- **Staging**: Production-like environment for testing
 
-**🌐 Base URL**: `http://10.5.50.48:41300`
+## 📚 **Documentation**
 
-### Health & Status
-- `GET /health` - API health check
-- `GET /api/test-db` - Database connection test
+### **Backend Documentation**
+- **API Endpoints**: Complete REST API reference
+- **Database Schema**: Table structures and relationships
+- **Authentication**: JWT implementation details
+- **Deployment**: Docker and production setup
 
-### Authentication
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `GET /api/auth/profile` - User profile
+### **Frontend Documentation**
+- **Component Library**: UI component documentation
+- **Page Implementations**: Detailed page guides
+- **Navigation System**: Menu and routing documentation
+- **Design System**: Styling and theming guide
 
-### Products
-- `GET /api/products` - List all products
-- `GET /api/products/:id` - Get product by ID
-- `GET /api/products/search/:query` - Search products
-- `GET /api/products/category/:categoryId` - Get products by category
-- `POST /api/products` - Create product
-- `PUT /api/products/:id` - Update product
-- `DELETE /api/products/:id` - Delete product
+### **Implementation Guides**
+- **Settings Page**: Complete settings implementation
+- **Employees Page**: Staff management system
+- **Products Page**: Inventory management
+- **Inventory Management**: Stock control system
+- **Reports Page**: Analytics and reporting
+- **Owner/Account Page**: Profile management
 
-### Customers
-- `GET /api/customers` - List all customers
+## 🧪 **Testing & Quality**
 
-### Sales
-- `GET /api/sales` - List sales
-- `POST /api/sales` - Create sale
-- `GET /api/sales/:id` - Get sale details
+### **Testing Strategy**
+- **Unit Tests**: Component and function testing
+- **Integration Tests**: API endpoint testing
+- **End-to-End Tests**: Complete user workflow testing
+- **Performance Tests**: Load and stress testing
 
-### Prescriptions
-- `GET /api/prescriptions` - List prescriptions
-- `POST /api/prescriptions` - Create prescription
-- `PUT /api/prescriptions/:id` - Update prescription
+### **Code Quality**
+- **TypeScript**: Full type safety
+- **ESLint**: Code style enforcement
+- **Prettier**: Code formatting
+- **Git Hooks**: Pre-commit quality checks
 
-## 🔒 Security Features
+## 🔄 **API Integration**
 
-- **JWT Authentication** - Secure token-based auth
-- **Role-based Access** - Admin, Pharmacist, Assistant roles
-- **Data Encryption** - Sensitive data protection
-- **Audit Logging** - Track all system changes
-- **Input Validation** - Prevent injection attacks
+### **RESTful Endpoints**
+- **Authentication**: `/api/auth/*`
+- **Products**: `/api/products/*`
+- **Sales**: `/api/sales/*`
+- **Employees**: `/api/employees/*`
+- **Inventory**: `/api/inventory/*`
+- **Reports**: `/api/reports/*`
 
-## 🌏 Thai Market Features
+### **Data Formats**
+- **Request**: JSON payloads
+- **Response**: JSON with status codes
+- **Authentication**: Bearer token headers
+- **File Uploads**: Multipart form data
 
-- **Local Language** - Thai and English support
-- **PromptPay** - Local payment integration
-- **VAT Compliance** - Thai tax calculations
-- **Local Regulations** - FDA compliance features
-- **Cultural Adaptation** - Thai business practices
+## 📱 **Mobile & Responsive**
 
-## 📈 Business Benefits
+### **Responsive Design**
+- **Mobile First**: Touch-optimized interface
+- **Breakpoints**: 640px, 1024px, 1280px
+- **Flexible Layouts**: Adaptive grid systems
+- **Touch Targets**: Adequate button sizes
 
-### For Pharmacies
-- **Increased Efficiency** - Faster prescription processing
-- **Better Inventory** - Prevent stockouts and expiry
-- **Patient Safety** - Drug interaction checking
-- **Compliance** - Meet regulatory requirements
-- **Analytics** - Business insights and reporting
+### **Mobile Features**
+- **Collapsible Navigation**: Space-efficient menus
+- **Touch Gestures**: Swipe and tap interactions
+- **Offline Support**: Service worker caching
+- **Progressive Web App**: Installable web application
 
-### Revenue Model
-- **Monthly Subscriptions** - $80-250/month per pharmacy
-- **Hardware Sales** - Barcode scanners, printers, tablets
-- **Training Services** - Staff onboarding and support
-- **Custom Development** - Additional features and integrations
+## 🚀 **Performance & Optimization**
 
-## 🚀 Docker Migration Guide
+### **Frontend Optimization**
+- **Code Splitting**: Lazy-loaded components
+- **Bundle Optimization**: Tree shaking and minification
+- **Image Optimization**: WebP and responsive images
+- **Caching Strategy**: Browser and service worker caching
 
-### Moving to Another Docker Environment
+### **Backend Optimization**
+- **Database Indexing**: Optimized query performance
+- **Connection Pooling**: Efficient database connections
+- **Caching**: Redis integration ready
+- **Load Balancing**: Multiple API instances
 
-If you need to move this project to another Docker environment (different server, cloud provider, etc.), follow these steps:
+## 🔧 **Troubleshooting**
 
-#### 1. Export Current Database
+### **Common Issues**
+- **Port Conflicts**: Check service port assignments
+- **Database Connection**: Verify PostgreSQL credentials
+- **Docker Issues**: Container startup and networking
+- **Build Errors**: Node.js version compatibility
+- **Nginx Port Mismatch**: Frontend services must listen on port 80 internally
+
+### **Recent Fixes Applied**
+- **Fixed nginx.conf port configuration**: Changed from port 40001/40002 to port 80 for internal container listening
+- **Created separate Dockerfile.backend**: For react-backend service to use correct nginx configuration
+- **Resolved Docker Compose ContainerConfig errors**: By cleaning up orphaned containers and rebuilding
+
+### **Debug Commands**
 ```bash
-# Export schema and data
-docker exec pharmacy_pos_db pg_dump -U pharmacy_user -d pharmacy_pos > pharmacy_pos_backup.sql
-
-# Export only schema (structure)
-docker exec pharmacy_pos_db pg_dump -U pharmacy_user -d pharmacy_pos --schema-only > pharmacy_pos_schema.sql
-
-# Export only data
-docker exec pharmacy_pos_db pg_dump -U pharmacy_user -d pharmacy_pos --data-only > pharmacy_pos_data.sql
-```
-
-#### 2. Update Docker Configuration
-- Modify `docker-compose.yml` for new environment
-- Update ports if needed
-- Adjust volume paths for new system
-- Update environment variables
-
-#### 3. Import to New Environment
-```bash
-# Start new PostgreSQL container
-docker-compose up -d postgres
-
-# Wait for container to be ready
-docker-compose logs -f postgres
-
-# Import data
-docker exec -i pharmacy_pos_db psql -U pharmacy_user -d pharmacy_pos < pharmacy_pos_backup.sql
-```
-
-#### 4. Verify Migration
-```bash
-# Test connection
-docker exec pharmacy_pos_db psql -U pharmacy_user -d pharmacy_pos -c "SELECT COUNT(*) FROM products;"
-
-# Check sample data
-docker exec pharmacy_pos_db psql -U pharmacy_user -d pharmacy_pos -c "SELECT name, price FROM products LIMIT 5;"
-```
-
-### Environment Variables
-Key variables to update when migrating:
-- `POSTGRES_PASSWORD`: Database password
-- Port mappings (if different ports needed)
-- Volume paths (for different file systems)
-- Network configurations
-
-## 🚧 Development Roadmap
-
-### Phase 1: Core POS (Weeks 1-4) - **IN PROGRESS**
-- [x] Database schema design
-- [x] PostgreSQL database setup with Docker
-- [x] Complete database schema with pharmacy tables
-- [x] Sample data (19 products, 8 customers, 5 prescriptions, 8 sales)
-- [x] Database views and functions for pharmacy operations
-- [x] Node.js API structure created
-- [x] Docker configuration for API service
-- [x] Basic API endpoints (health, products, customers)
-- [ ] **🚨 DEPLOY API TO REMOTE SERVER** ← **NEXT PRIORITY**
-- [ ] User authentication system
-- [ ] Basic product management
-- [ ] Simple sales interface
-
-### Phase 2: Pharmacy Features (Weeks 5-8)
-- [ ] Patient management system
-- [ ] Prescription processing
-- [ ] Drug expiry tracking
-- [ ] Basic reporting
-
-### Phase 3: Advanced Features (Weeks 9-12)
-- [ ] Drug interaction checking
-- [ ] Advanced analytics
-- [ ] Multi-location support
-- [ ] Thai language support
-
-### Phase 4: Compliance & Integration (Weeks 13-16)
-- [ ] Thai FDA compliance
-- [ ] Insurance integration
-- [ ] Advanced reporting
-- [ ] API for external systems
-
-## 🚀 Quick Deployment Guide
-
-### Deploy API to Remote Docker Server
-
-**⚠️ CURRENT STATUS**: API configured for Docker but not yet deployed to remote server
-
-**📋 NEXT STEPS REQUIRED**:
-
-**1. Copy Project to Remote Server**
-```bash
-# Copy project files to remote Docker server (10.5.50.48)
-scp -r /home/srekam/pharmacy-project user@10.5.50.48:/path/to/destination/
-
-# OR use rsync (more efficient)
-rsync -avz --exclude 'node_modules' --exclude '.git' /home/srekam/pharmacy-project/ user@10.5.50.48:/path/to/destination/pharmacy-project/
-```
-
-**2. Deploy on Remote Server**
-```bash
-# SSH to remote server
-ssh user@10.5.50.48
-
-# Navigate to project directory
-cd /path/to/pharmacy-project
-
-# Make deployment script executable
-chmod +x deploy.sh
-
-# Deploy everything (Database + pgAdmin + API)
-./deploy.sh
-```
-
-**2. Check Service Status**
-```bash
+# Check service status
 docker-compose ps
-# Should show: postgres, pgadmin, and api containers running
-```
 
-**3. Test API Endpoints**
-```bash
-# Health check
-curl http://10.5.50.48:3000/health
+# View service logs
+docker-compose logs [service-name]
+
+# Access container shell
+docker-compose exec [service-name] sh
+
+# Health check endpoints
+curl http://localhost:3000/health          # Backend API
+curl http://localhost:40001/health         # React Frontend
+curl http://localhost:40002/health         # React Backend
+curl http://localhost:40005/health         # Mock HTML Interface
 
 # Test database connection
-curl http://10.5.50.48:3000/api/test-db
+curl http://localhost:3000/api/test-db
 
-# List products
-curl http://10.5.50.48:3000/api/products
+# Test API through mock interface
+curl http://localhost:40005/api/test-db   # Via mock-html proxy
+
+# Test login functionality
+curl -X POST http://localhost:40005/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin123"}'
+
+# Clean up and rebuild if needed
+docker-compose down --remove-orphans
+docker-compose up -d --build
 ```
 
-**4. Deploy Code Changes**
-```bash
-# Option 1: Manual deployment
-docker-compose up -d --build api
+## 🤝 **Contributing**
 
-# Option 2: Use deployment script (recommended)
-./deploy.sh
+### **Development Workflow**
+1. **Fork Repository**: Create your own fork
+2. **Feature Branch**: Create feature-specific branches
+3. **Code Standards**: Follow TypeScript and ESLint rules
+4. **Testing**: Ensure all tests pass
+5. **Documentation**: Update relevant documentation
+6. **Pull Request**: Submit for review
 
-# Check logs for any errors
-docker-compose logs -f api
-```
+### **Code Standards**
+- **TypeScript**: Strict type checking enabled
+- **ESLint**: Airbnb style guide
+- **Prettier**: Consistent code formatting
+- **Git Commits**: Conventional commit messages
 
-**5. Verify Deployment**
-```bash
-# Check all containers are running
-docker-compose ps
+## 📄 **License & Legal**
 
-# Test API endpoints
-curl http://10.5.50.48:3000/health
-curl http://10.5.50.48:3000/api/test-db
-curl http://10.5.50.48:3000/api/products
-```
+- **License**: MIT License
+- **Copyright**: 2025 Pharmacy Management System
+- **Contributors**: Development team and community
+- **Third-Party**: Open source dependencies
 
-## 📋 **NEXT DEVELOPMENT PHASES**
+## 📞 **Support & Community**
 
-### **Phase 1A: API Deployment & Testing (Current Priority)**
-- [ ] **🚨 DEPLOY API TO REMOTE SERVER** ← **IMMEDIATE ACTION REQUIRED**
-- [ ] Test all API endpoints on remote server
-- [ ] Verify database connectivity from Docker containers
-- [ ] Test pgAdmin access and database management
-- [ ] Document API usage and testing procedures
+### **Getting Help**
+- **Documentation**: Comprehensive guides and references
+- **Issues**: GitHub issue tracking
+- **Discussions**: Community forums and Q&A
+- **Contributing**: Development guidelines and setup
 
-### **Phase 1B: Core API Features (After Deployment)**
-- [ ] Implement user authentication (JWT)
-- [ ] Add product CRUD operations (POST, PUT, DELETE)
-- [ ] Add customer management endpoints
-- [ ] Implement basic sales processing
-- [ ] Add inventory tracking endpoints
-
-### **Phase 1C: Pharmacy-Specific Features**
-- [ ] Prescription management API
-- [ ] Drug expiry tracking endpoints
-- [ ] Drug interaction checking
-- [ ] Patient record management
-- [ ] Basic reporting endpoints
-
-### **Phase 2: Frontend Development**
-- [ ] React Native mobile app setup
-- [ ] Basic login and dashboard screens
-- [ ] Product catalog interface
-- [ ] Sales processing UI
-- [ ] Customer management screens
-
-## 🔧 Troubleshooting Remote Development
-
-### Common Issues & Solutions
-
-**❌ "Connection refused" or "Cannot connect to database"**
-- **Problem**: Trying to connect to `localhost:5432` instead of remote server
-- **Solution**: Ensure `config.js` has `host: '10.5.50.48'`
-- **Check**: Run `docker-compose ps` on remote server to verify containers are running
-
-**❌ "pgAdmin not accessible"**
-- **Problem**: Trying to access `localhost:8080` instead of remote server
-- **Solution**: Use `http://10.5.50.48:8080` for pgAdmin access
-- **Check**: Verify firewall allows access to remote server ports
-
-**❌ "API server can't start"**
-- **Problem**: Port conflicts or network issues
-- **Solution**: Check if port 3000 is available on your local machine
-- **Check**: Ensure your machine can reach `10.5.50.48:5432`
-
-**✅ Verification Commands**
-```bash
-# Check remote Docker status
-ssh user@10.5.50.48 "cd /path/to/pharmacy-project && docker-compose ps"
-
-# Test database connection from your machine
-docker exec pharmacy_pos_db pg_isready -U pharmacy_user -d pharmacy_pos
-
-# Test API server locally
-curl http://10.5.50.19:43000/health
-```
-
-## 🚀 **QUICK ACTION CHECKLIST**
-
-### **Right Now - Deploy API to Remote Server:**
-1. **📁 Copy project to remote server (10.5.50.48)**
-2. **🔧 Run deployment script: `./deploy.sh`**
-3. **✅ Verify all containers are running**
-4. **🧪 Test API endpoints**
-
-### **After Deployment - Next Development:**
-1. **🔐 Implement user authentication**
-2. **💊 Add product management endpoints**
-3. **👥 Expand customer management**
-4. **💰 Add sales processing API**
-5. **📱 Start React Native mobile app**
-
-### **Current Blockers:**
-- ❌ **API not deployed to remote server yet**
-- ❌ **Need to copy project files to 10.5.50.48**
-- ❌ **Docker containers not running on remote server**
-
-**🎯 Priority: Get the API running on the remote Docker server first!**
-
-## 🤝 Contributing
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
-
-- **Email**: support@thaipharmacypos.com
-- **Phone**: +66-2-XXX-XXXX
-- **Documentation**: [docs.thaipharmacypos.com](https://docs.thaipharmacypos.com)
-
-## 🙏 Acknowledgments
-
-- **Demasylabs** - Base POS system inspiration
-- **Thai Pharmacy Community** - Industry insights and feedback
-- **Open Source Community** - Tools and libraries used
+### **Resources**
+- **API Reference**: Complete endpoint documentation
+- **Component Library**: UI component examples
+- **Design System**: Visual design guidelines
+- **Deployment Guide**: Production setup instructions
 
 ---
 
-**Built with ❤️ for Thai Pharmacies**
+**Project Version**: 2.9.1 - Docker Issues Fixed  
+**Last Updated**: August 17, 2025  
+**Architecture**: Microservices with Docker  
+**Frontend**: React + TypeScript + Tailwind CSS  
+**Backend**: Node.js + Express + PostgreSQL  
+**Deployment**: Docker + Nginx + Automated Scripts  
+**Status**: ✅ All Docker services running successfully

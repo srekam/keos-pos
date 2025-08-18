@@ -10,10 +10,11 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install dependencies with better caching
+RUN npm ci --only=production --prefer-offline --no-audit && \
+    npm cache clean --force
 
-# Copy source code
+# Copy source code (exclude unnecessary files)
 COPY . .
 
 # Create non-root user for security

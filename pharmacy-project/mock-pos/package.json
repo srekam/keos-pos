@@ -1,0 +1,22 @@
+{
+  "name": "mock-pos",
+  "version": "1.0.0",
+  "description": "Modern Point of Sale (POS) frontend interface with Tailwind CSS",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "serve": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "pos",
+    "tailwind",
+    "frontend",
+    "point-of-sale"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
